@@ -25,7 +25,7 @@ const Home = () => {
         <div
         className="tiles-common leave-planner-tile"
         onClick={() => {
-          navigate("/home");
+          navigate("/product/all");
         }}
       >
         <div className="tile-icon">

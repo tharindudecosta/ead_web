@@ -1,0 +1,311 @@
+
+body {
+    font-family: "Iceberg", monospace;
+    padding: 0;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .leavePlannerTopic {
+    display: inline-block;
+    letter-spacing: 3.5px;
+  }
+  .leavePlannerDate {
+    font-size: 23px;
+  }
+    
+.enterTimeBtn {
+  background-color: #1aac83;
+  display: inline-block;
+  margin-left: 70%;
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Iceberg";
+  font-size: large;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.enterTimeBtn:hover {
+  background-color: #2dc298;
+}
+
+.timeFormBtn{
+  background-color: transparent;
+  padding: 20px;
+  border: none;
+  font-size: 24px;
+  font-family: "Iceberg";
+}
+
+.timeFormBtnUnderline{
+  text-underline-offset: 2px;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+}
+
+.txtArea{
+  padding: 10px;
+  margin-top: 10px;
+  width: 250px;
+  height: 60px;
+  font-size: 16px;
+  border: 1px solid #adabab;
+  border-radius: 4px;
+  box-sizing: border-box;
+  display:block
+}
+
+.my-time-picker {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: auto;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.react-time-picker__inputGroup{
+  font-size: 25px;
+  padding: auto;
+}
+.react-time-picker__wrapper{
+  padding: 20px;
+  width: fit-content;
+}
+
+.react-time-picker__clear-button__icon react-time-picker__button__icon{
+  padding-left: 40px
+}
+
+.submitTime{
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Iceberg";
+  font-size: large;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.enterTimeForm{
+  font-family: 'Iceberg', monospace;
+  width: 30%;
+  padding: 20px;
+  margin-top:15px;
+  background-color: #b6bdc7;
+  border-radius: 15px;
+}
+.enterTimeFormLabel{
+  font-size: 20px;
+}
+
+.inputSearch{
+  display:inline-block;
+  padding: 10px;
+  margin: 10px;
+  margin-left: 0;
+  width: 250px;
+  height: 38px;
+  font-size: 16px;
+  border: 1px solid #adabab;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.pdfBtn{
+    background-color: #4a9781;
+    display: inline-block;
+    margin-left: 70px;
+    width: 75px;
+    border: 0;
+    color: #fff;
+    padding: 10px;
+    font-family: "Iceberg";
+    font-size: large;
+    border-radius: 4px;
+    cursor: pointer;
+
+}
+
+.attIn{
+  padding-bottom: 20px;
+  width: 322.22222px;
+  display:inline-block;
+  padding: 10px;
+  margin: 10px;
+  margin-left: 0;
+  height: 38px;
+  font-size: 16px;
+  border: 1px solid #adabab;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.updateProductForm{
+  font-family: 'Iceberg', monospace;
+  padding: 20px;
+  padding-left: 25px;
+  margin-top:15px;
+  background-color: #cccfd3;
+  border-radius: 15px;
+  font-size: 25px;
+}
+.updateProductForm label,input{
+  display: inline-block;
+  margin-right: 10px;
+  padding: 5px;
+}
+.updateBtn{
+  background-color: #4a9781;
+  display: inline-block;
+  margin-left: 70px;
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Iceberg";
+  font-size: large;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.addProductBtn {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.addProductBtn:hover {
+  background-color: #45a049;
+}
+
+
+
+#product_table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#product_table td, #product_table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#product_table tr:hover {background-color: #ddd;}
+
+#product_table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #3E76B8;
+  color: white;
+  font-weight: 100;
+}
+
+.appButton{
+  width: 130px;
+  background-color:#0e9cc7;
+  border-radius:28px;
+  border:2px solid #0a6480;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  font-family:Arial;
+  font-size:12px;
+  padding:9px 14px;
+  text-decoration:none;
+  text-shadow:0px 1px 0px #0a6480;
+margin: 10px;
+}
+
+.appButton:hover {
+  background-color:#0a6480;
+}
+.appButton:active {
+  position:relative;
+  top:1px;
+}
+
+.addProductForm {
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 10px;
+  max-width: 500px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.addProductForm h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.addProductForm label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: bold;
+}
+
+.addProductForm input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.addProductForm input[type="radio"] {
+  width: auto;
+  margin-right: 5px;
+}
+
+.addProductForm .statusContainer {
+  margin-bottom: 20px;
+}
+
+.addProductForm .statusLabel {
+  display: inline-block;
+  margin-right: 15px;
+  color: #555;
+  font-weight: normal;
+}
+
+.addProductForm button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.addProductForm button:hover {
+  background-color: #45a049;
+}
+
+.addProductForm .error {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+  .addProductForm {
+    padding: 15px;
+  }
+}
