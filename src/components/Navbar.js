@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const handleClick = () => {
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
     // logout
+    e.preventDefault();
+    navigate("/");
   };
 
   return (
