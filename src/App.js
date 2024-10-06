@@ -12,7 +12,9 @@ import AllProducts from "./views/Products/AllProducts";
 import ProductUpdate from "./views/Products/ProductUpdate";
 import AddProduct from "./views/Products/AddProduct";
 import InventoryDashboard from "./views/Inventory/InventoryDashboard";
-import UpdateStock from "./views/Inventory/UpdateStock";  // New stock update page
+import UpdateStock from "./views/Inventory/UpdateStock";
+import OrderManagement from "./views/Orders/OrderManagement"; // New Order Management view
+import OrderUpdate from "./views/Orders/OrderUpdate"; // New Order Update view
 
 function App() {
   return (
@@ -27,7 +29,9 @@ function App() {
             <Route path="/product/update" element={<ProductUpdate />} />
             <Route path="/product/add" element={<AddProduct />} />
             <Route path="/inventory" element={<InventoryDashboard />} />
-            <Route path="/inventory/update" element={<UpdateStock />} /> {/* New route for updating stock */}
+            <Route path="/inventory/update" element={<UpdateStock />} />
+            <Route path="/orders" element={<OrderManagement />} />
+            <Route path="/orders/update" element={<OrderUpdate />} /> {/* New route for Order Update */}
           </Routes>
         </div>
       </BrowserRouter>
