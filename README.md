@@ -68,3 +68,14 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### References
+
+React. (n.d.). React – A JavaScript library for building user interfaces. https://reactjs.org/
+
+SweetAlert2. (n.d.). SweetAlert2 Documentation. https://sweetalert2.github.io/
+
+Traversy Media. (2020, July 14). React JS Crash Course [Video]. YouTube. https://www.youtube.com/watch?v=w7ejDZ8SWv8
+
+freeCodeCamp.org. (2019, August 14). How to Build an Inventory Management System with React.js [Video]. YouTube. https://www.youtube.com/watch?v=9e7bYv9LwA4
+
