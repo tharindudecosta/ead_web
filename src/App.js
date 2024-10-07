@@ -15,6 +15,8 @@ import InventoryDashboard from "./views/Inventory/InventoryDashboard";
 import UpdateStock from "./views/Inventory/UpdateStock";
 import OrderManagement from "./views/Orders/OrderManagement"; // New Order Management view
 import OrderUpdate from "./views/Orders/OrderUpdate"; // New Order Update view
+import AllUsers from "./views/Users/AllUsers";
+import AddUser from "./views/Users/AddUser";
 
 function App() {
   return (
@@ -28,10 +30,13 @@ function App() {
             <Route path="/product/all" element={<AllProducts />} />
             <Route path="/product/update" element={<ProductUpdate />} />
             <Route path="/product/add" element={<AddProduct />} />
+            <Route path="/user/all" element={<AllUsers />} />
+            <Route path="/user/add" element={<AddUser />} />
             <Route path="/inventory" element={<InventoryDashboard />} />
             <Route path="/inventory/update" element={<UpdateStock />} />
             <Route path="/orders" element={<OrderManagement />} />
-            <Route path="/orders/update" element={<OrderUpdate />} /> {/* New route for Order Update */}
+            <Route path="/orders/update" element={<OrderUpdate />} />{" "}
+            {/* New route for Order Update */}
           </Routes>
         </div>
       </BrowserRouter>
