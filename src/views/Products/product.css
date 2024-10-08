@@ -6,103 +6,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.updateProductForm {
-  font-family: 'Iceberg', monospace;
-  padding: 20px;
-  padding-left: 25px;
-  margin-top: 15px;
-  background-color: #cccfd3;
-  border-radius: 15px;
-  font-size: 25px;
-}
-
-.updateProductForm label, input {
-  display: inline-block;
-  margin-right: 10px;
-  padding: 5px;
-}
-
-.updateBtn {
-  background-color: #4a9781;
-  display: inline-block;
-  margin-left: 70px;
-  border: 0;
-  color: #fff;
-  padding: 10px;
-  font-family: "Iceberg";
-  font-size: large;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.addProductForm {
-  background-color: #f9f9f9;
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 10px;
-  max-width: 500px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.addProductForm h3 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.addProductForm label {
-  display: block;
-  margin-bottom: 8px;
-  color: #555;
-  font-weight: bold;
-}
-
-.addProductForm input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-.addProductForm input[type="radio"] {
-  width: auto;
-  margin-right: 5px;
-}
-
-.addProductForm .statusContainer {
-  margin-bottom: 20px;
-}
-
-.addProductForm .statusLabel {
-  display: inline-block;
-  margin-right: 15px;
-  color: #555;
-  font-weight: normal;
-}
-
-.addProductForm button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  width: 100%;
-  border-radius: 5px;
-}
-
-.addProductForm button:hover {
-  background-color: #45a049;
-}
-
-@media (max-width: 600px) {
-  .addProductForm {
-      padding: 15px;
-  }
-}
-
 .product-container {
   width: 90%;
   margin: auto;
@@ -136,53 +39,39 @@ h2 {
   background-color: #218838;
 }
 
-/* Table styling for AllProducts component */
+/* Table styling */
 #product_table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  background-color: #f9f9f9; /* Light background */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
 }
 
 #product_table th, #product_table td {
   padding: 15px;
   text-align: left;
-  border: 1px solid #ddd; /* Soft border between cells */
+  border: 1px solid #ddd;
 }
 
-/* Style for table header */
 #product_table th {
-  background-color: #3E76B8; /* A nice blue tone */
+  background-color: #3E76B8;
   color: white;
   font-weight: 600;
-  text-transform: uppercase; /* Capitalize headers */
-  letter-spacing: 1px; /* Add some spacing between letters */
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-/* Add subtle border and shadow effect */
 #product_table td {
-  border-right: 1px solid #ddd; /* Border between columns */
+  border-right: 1px solid #ddd;
 }
 
-/* Table header first column with rounded corners */
-#product_table th:first-child {
-  border-top-left-radius: 10px;
-}
-
-#product_table th:last-child {
-  border-top-right-radius: 10px;
-}
-
-/* Center align content in specific columns if needed (like status) */
-#product_table .status-column {
+/* Center align for status and action columns */
+#product_table .status-column, #product_table .action-column {
   text-align: center;
 }
 
-#product_table .action-column {
-  text-align: center;
-}
-
+/* Status classes */
 .status-active {
   color: green;
 }
@@ -191,16 +80,28 @@ h2 {
   color: red;
 }
 
-.icon-btn {
+/* Action buttons */
+.actionBtn {
   cursor: pointer;
-  padding: 5px;
-  font-size: 18px;
+  margin-right: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
 }
 
-.delete-icon:hover {
-  color: red;
+.actionBtn.update {
+  background-color: #4CAF50;
 }
 
-.update-icon:hover {
-  color: green;
+.actionBtn.delete {
+  background-color: #f44336;
+}
+
+.actionBtn.update:hover {
+  background-color: #45a049;
+}
+
+.actionBtn.delete:hover {
+  background-color: #e53935;
 }

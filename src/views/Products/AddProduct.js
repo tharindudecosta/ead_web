@@ -1,8 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
 import swal from "sweetalert2";
 import "./product.css";
-
-// https://youtu.be/St3BmJ9bjCs
 
 const AddProduct = () => {
   const [productName, setProductName] = useState("");
@@ -11,7 +10,7 @@ const AddProduct = () => {
   const [vendor, setVendor] = useState("");
   const [status, setStatus] = useState("Active");
 
-  const handleAddProduct = (e) => {
+  const handleAddProduct = async (e) => {
     e.preventDefault();
 
     if (!productName || !unitPrice || !category || !vendor) {
@@ -23,18 +22,40 @@ const AddProduct = () => {
       return;
     }
 
-    swal.fire({
-      title: "Success!",
-      text: "Product has been added.",
-      icon: "success",
-    });
+    const newProduct = {
+      productName,
+      unitPrice: parseFloat(unitPrice), // Ensure unit price is a number
+      category,
+      vendor,
+      status,
+    };
 
-    // Reset form fields
-    setProductName("");
-    setUnitPrice("");
-    setCategory("");
-    setVendor("");
-    setStatus("Active");
+    try {
+      // API call to add the new product
+      const response = await axios.post("/api/Product", newProduct);
+      
+      // Success alert
+      swal.fire({
+        title: "Success!",
+        text: "Product has been added.",
+        icon: "success",
+      });
+
+      // Reset form fields
+      setProductName("");
+      setUnitPrice("");
+      setCategory("");
+      setVendor("");
+      setStatus("Active");
+    } catch (error) {
+      // Error handling
+      swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to add product. Please try again.",
+      });
+      console.error("Error adding product:", error);
+    }
   };
 
   return (

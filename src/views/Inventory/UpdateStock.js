@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios"; // Import Axios for API calls
 import swal from "sweetalert2";
 import "./inventory.css";
 
@@ -10,7 +11,7 @@ const UpdateStock = () => {
   const { sku, name, stock } = location.state.product; // Get the passed product data
   const [newStock, setNewStock] = useState(stock);
 
-  const handleUpdateStock = (e) => {
+  const handleUpdateStock = async (e) => {
     e.preventDefault();
 
     if (newStock < 0) {
@@ -22,16 +23,28 @@ const UpdateStock = () => {
       return;
     }
 
-    swal.fire({
-      title: "Stock Updated!",
-      text: `${name}'s stock has been updated to ${newStock}`,
-      icon: "success",
-    });
+    try {
+      // API call to update stock
+      await axios.put(`/api/Inventory/product/${sku}`, { stock: newStock });
 
-    // You can replace this with API call to update stock in the database
-    setTimeout(() => {
-      navigate("/inventory"); // Redirect back to the inventory page after updating stock
-    }, 2000);
+      swal.fire({
+        title: "Stock Updated!",
+        text: `${name}'s stock has been updated to ${newStock}`,
+        icon: "success",
+      });
+
+      // Redirect back to the inventory page after a delay
+      setTimeout(() => {
+        navigate("/inventory");
+      }, 2000);
+    } catch (error) {
+      console.error("Error updating stock:", error);
+      swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to update stock. Please try again.",
+      });
+    }
   };
 
   return (
