@@ -100,9 +100,9 @@ const AllUsers = () => {
           onChange={(e) => handleFilter(e.target.value)}
         >
           <option value="All">All Roles</option>
-          <option value="Admin">Admin</option>
-          <option value="Manager">Manager</option>
-          <option value="Customer">Customer</option>
+          <option value="Vendor">Admin</option>
+          <option value="CSR">Manager</option>
+          <option value="Admin">Customer</option>
         </select>
 
         {/* Add User button */}

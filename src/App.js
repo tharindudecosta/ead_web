@@ -17,6 +17,8 @@ import OrderManagement from "./views/Orders/OrderManagement"; // New Order Manag
 import OrderUpdate from "./views/Orders/OrderUpdate"; // New Order Update view
 import AllUsers from "./views/Users/AllUsers";
 import AddUser from "./views/Users/AddUser";
+import AllVendors from "./views/Vendors/AllVendors";
+import AddVendor from "./views/Vendors/AddVendor";
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
             <Route path="/product/add" element={<AddProduct />} />
             <Route path="/user/all" element={<AllUsers />} />
             <Route path="/user/add" element={<AddUser />} />
+            <Route path="/vendor/all" element={<AllVendors />} />
+            <Route path="/vendor/add" element={<AddVendor />} />
             <Route path="/inventory" element={<InventoryDashboard />} />
             <Route path="/inventory/update" element={<UpdateStock />} />
             <Route path="/orders" element={<OrderManagement />} />
