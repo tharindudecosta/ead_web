@@ -93,11 +93,16 @@ const Home = () => {
             <div className="tile-text">CSR</div>
           </div>
 
-          <div className="tiles-common company-policies-tile">
+          <div
+            className="tiles-common company-policies-tile"
+            onClick={() => {
+              navigate("/vendor/all");
+            }}
+          >
             <div className="tile-icon">
               <i className="fa-solid fa-file-contract fa-lg"></i>
             </div>
-            <div className="tile-text">Company Policies</div>
+            <div className="tile-text">Vendors</div>
           </div>
         </div>
       </section>
