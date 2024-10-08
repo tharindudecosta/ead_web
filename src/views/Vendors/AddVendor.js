@@ -10,11 +10,10 @@ const AddVendor = () => {
   const [category, setCategory] = useState("");
   const [isActive, setIsActive] = useState(true);
 
-  const handleAddVendor = (e) => {
+  const handleAddVendor = async (e) => {
     e.preventDefault();
 
-    // Basic validation
-    if (!vendorName || !contactEmail || !phoneNumber || !category) {
+    if (!category || !contactEmail || !phoneNumber || !category) {
       swal.fire({
         icon: "error",
         title: "Oops...",
@@ -23,20 +22,39 @@ const AddVendor = () => {
       return;
     }
 
-    // Simulate successful vendor addition (replace with API call)
-    swal.fire({
-      title: "Success!",
-      text: "Vendor has been added.",
-      icon: "success",
-    });
+    const vendor = {
+      vendorName,
+      contactEmail,
+      phoneNumber,
+      category,
+      isActive,
+    };
 
-    // Reset form fields
-    setVendorName("");
-    setContactEmail("");
-    setPhoneNumber("");
-    setCategory("");
-    setIsActive(true);
+    try {
+      await axios.post("/api/Vendor", vendor);
+
+      swal.fire({
+        title: "Success!",
+        text: "Vendor has been added.",
+        icon: "success",
+      });
+
+      // Reset form fields
+      setVendorName("");
+      setEmail("");
+      setRole("");
+      setStatus("Active");
+    } catch (error) {
+      console.error("Error adding vendor:", error);
+      swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to add vendor. Please try again.",
+      });
+    }
   };
+
+
 
   return (
     <div className="vendor-container">
