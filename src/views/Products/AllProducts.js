@@ -1,57 +1,33 @@
-import React, { useState } from "react";
-import AllProductsSingle from "./AllProductsSingle";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; // Import Axios
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert2"; // For alerts
 import "./product.css"; // We'll improve this stylesheet for better visuals
 
 const AllProducts = () => {
   const navigate = useNavigate();
-
-  // Sample data for products (replace with API fetched data later)
-  const [records, setRecords] = useState([
-    {
-      _id: "64d5a5e68e6a10ff283b7e9a",
-      productname: "Wireless Mouse",
-      unitprice: "29.99",
-      category: "Electronics",
-      vendor: "TechCo",
-      isactive: true
-    },
-    {
-      _id: "64d5a6f88e6a10ff283b7e9b",
-      productname: "Gaming Keyboard",
-      unitprice: "89.99",
-      category: "Electronics",
-      vendor: "ProKey",
-      isactive: true
-    },
-    {
-      _id: "64d5a7a28e6a10ff283b7e9c",
-      productname: "Office Chair",
-      unitprice: "199.99",
-      category: "Furniture",
-      vendor: "ComfortSeating",
-      isactive: false
-    },
-    {
-      _id: "64d5a9c88e6a10ff283b7e9d",
-      productname: "Water Bottle",
-      unitprice: "12.50",
-      category: "Accessories",
-      vendor: "HydroLife",
-      isactive: true
-    },
-    {
-      _id: "64d5a9c88e6a10ff283b7e9e",
-      productname: "Smartphone",
-      unitprice: "799.00",
-      category: "Electronics",
-      vendor: "PhoneInc",
-      isactive: false
-    }
-  ]);
-
+  const [records, setRecords] = useState([]); // Initially empty, fetched from API
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
+
+  // Fetch products from the API on component load
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("/api/Product");
+        setRecords(response.data); // Assuming response.data contains the product list
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to fetch products.",
+        });
+      }
+    };
+
+    fetchProducts();
+  }, []); // Empty dependency array means it runs once on component mount
 
   const handleSearch = (searchValue) => {
     setSearchTerm(searchValue);
@@ -61,16 +37,42 @@ const AllProducts = () => {
     setCategoryFilter(filterValue);
   };
 
+  // Filtering products by search and category
   const filteredRecords = records.filter((record) => {
     const matchesSearch = record.productname.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      categoryFilter === "All" || record.category === categoryFilter;
+    const matchesCategory = categoryFilter === "All" || record.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
 
   // Navigate to Add Product page
   const handleAddProduct = () => {
     navigate("/product/add"); // Navigate to add-product route
+  };
+
+  // Navigate to Update Product page
+  const handleUpdate = (id) => {
+    navigate(`/product/update/${id}`);
+  };
+
+  // Handle product deletion via API
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/Product/${id}`);
+      swal.fire({
+        title: "Deleted!",
+        text: "Product has been deleted.",
+        icon: "success",
+      });
+      // Remove the product from the records state after deletion
+      setRecords(records.filter((record) => record._id !== id));
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to delete product.",
+      });
+    }
   };
 
   return (
@@ -111,18 +113,35 @@ const AllProducts = () => {
             <th>Category</th>
             <th>Vendor</th>
             <th>Status</th>
-            <th>Delete</th>
-            <th>Update</th>
+            <th>Action</th> {/* Action column for Update/Delete buttons */}
           </tr>
         </thead>
         <tbody>
           {filteredRecords.length > 0 ? (
             filteredRecords.map((record) => (
-              <AllProductsSingle key={record._id} record={record} />
+              <tr key={record._id}>
+                <td>{record.productname}</td>
+                <td>{record.unitprice}</td>
+                <td>{record.category}</td>
+                <td>{record.vendor}</td>
+                <td>
+                  <span className={record.isactive ? "status-active" : "status-inactive"}>
+                    {record.isactive ? "Active" : "Inactive"}
+                  </span>
+                </td>
+                <td>
+                  <button className="actionBtn update" onClick={() => handleUpdate(record._id)}>
+                    Update
+                  </button>
+                  <button className="actionBtn delete" onClick={() => handleDelete(record._id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="7">No products found</td>
+              <td colSpan="6">No products found</td>
             </tr>
           )}
         </tbody>

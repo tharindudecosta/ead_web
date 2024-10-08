@@ -1,53 +1,34 @@
-// AllUsers.js
 import React, { useState, useEffect } from "react";
+import axios from "axios"; // Import Axios for API calls
 import AllUsersSingle from "./AllUsersSingle"; // Updated child component
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert2"; // Import SweetAlert for notifications
 import "./users.css"; // Updated stylesheet for users
 
 const AllUsers = () => {
   const navigate = useNavigate();
-
-  // Sample data for users (replace with API fetched data later)
-  const [users, setUsers] = useState([
-    {
-      _id: "user1",
-      name: "Harsha Perera",
-      email: "harsha.perera@gmail.com",
-      role: "Admin",
-      isActive: true,
-    },
-    {
-      _id: "user2",
-      name: "Saman Silva",
-      email: "saman.silva@gmail.com",
-      role: "Vendor",
-      isActive: true,
-    },
-    {
-      _id: "user3",
-      name: "Lahiru Fonseka",
-      email: "Lahiru.fonseka@gmail.com",
-      role: "Vendor",
-      isActive: false,
-    },
-    {
-      _id: "user4",
-      name: "Kavindu Peries",
-      email: "kavindu.peries@gmail.com",
-      role: "CSR",
-      isActive: true,
-    },
-    {
-      _id: "user5",
-      name: "Priyannka Perera",
-      email: "priyanka.perera@gmail.com", // Corrected email
-      role: "Admin",
-      isActive: false,
-    },
-  ]);
-
+  const [users, setUsers] = useState([]); // Initially empty, fetched from API
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("All");
+
+  // Fetch users from the API on component mount
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("/api/User");
+        setUsers(response.data); // Assuming response.data contains the user list
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to fetch users.",
+        });
+      }
+    };
+
+    fetchUsers();
+  }, []); // Empty dependency array means it runs once on component mount
 
   // Handle search input
   const handleSearch = (searchValue) => {
@@ -73,10 +54,27 @@ const AllUsers = () => {
     navigate("/user/add"); // Navigate to add-user route
   };
 
-  // (Optional) Fetch users from API on component mount
-  // useEffect(() => {
-  //   fetchUsersFromAPI();
-  // }, []);
+  // Handle deleting a user
+  const handleDeleteUser = async (userId) => {
+    try {
+      await axios.delete(`/api/User/${userId}`);
+      swal.fire({
+        title: "Deleted!",
+        text: "The user has been removed.",
+        icon: "success",
+      });
+
+      // Remove the user from the local state after successful deletion
+      setUsers(users.filter((user) => user._id !== userId));
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to delete the user. Please try again.",
+      });
+    }
+  };
 
   return (
     <div className="user-container">
@@ -125,7 +123,11 @@ const AllUsers = () => {
         <tbody>
           {filteredUsers.length > 0 ? (
             filteredUsers.map((user) => (
-              <AllUsersSingle key={user._id} user={user} />
+              <AllUsersSingle
+                key={user._id}
+                user={user}
+                handleDeleteUser={handleDeleteUser} // Pass delete function to child component
+              />
             ))
           ) : (
             <tr>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios"; // Import Axios for API calls
 import swal from "sweetalert2";
 import "./orderManagement.css";
 
@@ -17,7 +18,7 @@ const OrderUpdate = () => {
     return (quantity * unitPrice).toFixed(2);
   };
 
-  const handleSaveOrder = (e) => {
+  const handleSaveOrder = async (e) => {
     e.preventDefault();
 
     if (!customerName || items.length === 0) {
@@ -36,18 +37,29 @@ const OrderUpdate = () => {
       status,
     };
 
-    // API call logic to save the updated order can be added here
+    try {
+      // API call to update the order
+      await axios.put(`/api/Order/${order.orderId}`, updatedOrder);
 
-    swal.fire({
-      title: "Order Updated!",
-      text: `Order ${order.orderId} has been successfully updated.`,
-      icon: "success",
-    });
+      // Success notification
+      swal.fire({
+        title: "Order Updated!",
+        text: `Order ${order.orderId} has been successfully updated.`,
+        icon: "success",
+      });
 
-    // Redirect back to order management
-    setTimeout(() => {
-      navigate("/orders");
-    }, 2000);
+      // Redirect back to the order management page
+      setTimeout(() => {
+        navigate("/orders");
+      }, 2000);
+    } catch (error) {
+      console.error("Error updating order:", error);
+      swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to update the order. Please try again.",
+      });
+    }
   };
 
   return (

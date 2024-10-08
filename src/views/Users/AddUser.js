@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios"; // Import Axios for API calls
 import swal from "sweetalert2";
 import "./users.css";
 
@@ -8,7 +9,7 @@ const AddUser = () => {
   const [role, setRole] = useState("");
   const [status, setStatus] = useState("Active");
 
-  const handleAddUser = (e) => {
+  const handleAddUser = async (e) => {
     e.preventDefault();
 
     if (!userName || !email || !role) {
@@ -20,17 +21,36 @@ const AddUser = () => {
       return;
     }
 
-    swal.fire({
-      title: "Success!",
-      text: "User has been added.",
-      icon: "success",
-    });
+    const newUser = {
+      userName,
+      email,
+      role,
+      status,
+    };
 
-    // Reset form fields
-    setUserName("");
-    setEmail("");
-    setRole("");
-    setStatus("Active");
+    try {
+      // API call to add the new user
+      await axios.post("/api/User", newUser);
+
+      swal.fire({
+        title: "Success!",
+        text: "User has been added.",
+        icon: "success",
+      });
+
+      // Reset form fields
+      setUserName("");
+      setEmail("");
+      setRole("");
+      setStatus("Active");
+    } catch (error) {
+      console.error("Error adding user:", error);
+      swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to add user. Please try again.",
+      });
+    }
   };
 
   return (

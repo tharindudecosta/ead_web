@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"; // Added useNavigate
+import axios from "axios"; // Import Axios
 import swal from "sweetalert2";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./product.css";
 
 const ProductUpdate = () => {
   const location = useLocation();
+  const navigate = useNavigate(); // Used for redirecting after update
   const product = location.state.product; // Get the passed product record
 
   // Initialize state with the passed product data
@@ -13,12 +15,10 @@ const ProductUpdate = () => {
   const [unitPrice, setUnitPrice] = useState(product.unitprice);
   const [category, setCategory] = useState(product.category);
   const [vendor, setVendor] = useState(product.vendor);
-  const [status, setStatus] = useState(
-    product.isactive ? "Active" : "Inactive"
-  );
+  const [status, setStatus] = useState(product.isactive ? "Active" : "Inactive");
   const [loading, setLoading] = useState(false); // State to control spinner visibility
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
     if (!productName || !unitPrice || !category || !vendor || !status) {
@@ -32,15 +32,36 @@ const ProductUpdate = () => {
 
     setLoading(true); // Show spinner when submitting
 
-    setTimeout(() => {
-      // Simulate async process like API call
+    const updatedProduct = {
+      productName,
+      unitPrice: parseFloat(unitPrice), // Ensure it's a number
+      category,
+      vendor,
+      isactive: status === "Active", // Convert status to boolean
+    };
+
+    try {
+      // API call to update the product
+      await axios.put(`/api/Product/${product._id}`, updatedProduct);
+
+      // Success alert
       swal.fire({
         title: "Success!",
         text: "Product Updated",
         icon: "success",
       });
-      setLoading(false); // Hide spinner after the process
-    }, 2000); // Simulate 2-second delay
+
+      setLoading(false); // Hide spinner
+      navigate("/product/all"); // Redirect back to All Products page
+    } catch (error) {
+      setLoading(false); // Hide spinner on error
+      swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to update the product. Please try again.",
+      });
+      console.error("Error updating product:", error);
+    }
   };
 
   return (
