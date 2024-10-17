@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import swal from "sweetalert2";
 import "./product.css";
+import { axiosclient } from "../../api";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useLocation } from "react-router-dom";
 
 const AddProduct = () => {
   const [productName, setProductName] = useState("");
@@ -9,9 +12,46 @@ const AddProduct = () => {
   const [category, setCategory] = useState("");
   const [vendor, setVendor] = useState("");
   const [status, setStatus] = useState("Active");
+  const [vendors, setVendors] = useState([]);
+  const [loading, setLoading] = useState(false); // State to control spinner visibility
+  
+  const location = useLocation();
+  const productVendor = location && location.state && location.state.productVendor;
+
+  useEffect(() => {
+    const fetchVendors = async () => {
+      try {
+        const response = await axiosclient.get(`/api/Vendor`);
+        console.log(response.data);
+
+        if (Array.isArray(response.data)) {
+          setVendors(response.data);
+        } else {
+          console.error("Expected an array, but got:", response.data);
+          setVendors([]);
+        }
+
+        if(productVendor!=null){
+          setVendor(productVendor.id)
+        }
+
+
+      } catch (error) {
+        console.error("Error fetching vendors:", error);
+        swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to fetch vendors.",
+        });
+      }
+    };
+
+    fetchVendors();
+  }, []);
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!productName || !unitPrice || !category || !vendor) {
       swal.fire({
@@ -23,45 +63,53 @@ const AddProduct = () => {
     }
 
     const newProduct = {
-      productName,
-      unitPrice: parseFloat(unitPrice), // Ensure unit price is a number
-      category,
-      vendor,
-      status,
+      productName:productName,
+      unitPrice: unitPrice,
+      category:category,
+      vendor:vendor,
+      isActive:status === "Active",
     };
 
-    try {
-      // API call to add the new product
-      const response = await axios.post("/api/Product", newProduct);
-      
-      // Success alert
-      swal.fire({
-        title: "Success!",
-        text: "Product has been added.",
-        icon: "success",
-      });
 
-      // Reset form fields
-      setProductName("");
-      setUnitPrice("");
-      setCategory("");
-      setVendor("");
-      setStatus("Active");
+    try {
+      axiosclient
+        .post(`/api/Product/`, newProduct)
+        .then((response) => {
+          swal.fire({
+            title: "Success!",
+            text: "Product has been added.",
+            icon: "success",
+          });
+
+          setLoading(false);
+          setProductName("");
+          setUnitPrice("");
+          if(productVendor==null){
+            setVendor("");
+          }
+          setCategory("");
+          setStatus("Active");
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.error("Failed to fetch user details", err);
+        });
     } catch (error) {
-      // Error handling
+      setLoading(false); // Hide spinner on error
       swal.fire({
         icon: "error",
         title: "Error",
         text: "Failed to add product. Please try again.",
       });
-      console.error("Error adding product:", error);
+      console.error("Error updating product:", error);
     }
+
   };
 
   return (
     <div>
       <form className="addProductForm" onSubmit={handleAddProduct}>
-        <h3>Add Product</h3>
+        <h3>Add Product {productVendor ? ` : ${productVendor.name}` : ""}</h3>
 
         <label>Product Name</label>
         <input
@@ -85,11 +133,17 @@ const AddProduct = () => {
         />
 
         <label>Vendor</label>
-        <input
-          type="text"
-          value={vendor}
-          onChange={(e) => setVendor(e.target.value)}
-        />
+        <select value={vendor} onChange={(e) => setVendor(e.target.value)}>
+          <option value="">Select Vendor</option>
+          {vendors.map((v) => (
+            <option key={v.id} value={v.id}>
+              {v.name} {/* Assuming vendor has a 'name' field */}
+            </option>
+          ))}
+        </select>
+
+        <br></br>
+        <br></br>
 
         <div className="statusContainer">
           <label>Status</label>
@@ -110,7 +164,9 @@ const AddProduct = () => {
           <label className="statusLabel">Inactive</label>
         </div>
 
-        <button type="submit">Add Product</button>
+        <button type="submit" disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : "Add Product"}
+        </button>
       </form>
     </div>
   );

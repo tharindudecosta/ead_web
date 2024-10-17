@@ -20,6 +20,9 @@ import AddUser from "./views/Users/AddUser";
 import AllVendors from "./views/Vendors/AllVendors";
 import AddVendor from "./views/Vendors/AddVendor";
 import UpdateVendor from "./views/Vendors/UpdateVendor";
+import AllVendorProducts from "./views/Products/AllVendorProducts";
+import ProductUpdateVendor from "./views/Products/ProductUpdateVendor";
+import AllVendorReviews from "./views/Vendors/AllVendorReviews";
 
 function App() {
   return (
@@ -42,6 +45,9 @@ function App() {
             <Route path="/orders" element={<OrderManagement />} />
             <Route path="/orders/update" element={<OrderUpdate />} />
             <Route path="/vendor/update" element={<UpdateVendor />} />
+            <Route path="/vendor/products" element={<AllVendorProducts />} />
+            <Route path="/vendor/product/update" element={<ProductUpdateVendor />} />
+            <Route path="/vendor/reviews" element={<AllVendorReviews />} />
             {/* New route for Order Update */}
           </Routes>
         </div>

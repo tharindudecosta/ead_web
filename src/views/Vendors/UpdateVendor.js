@@ -1,14 +1,13 @@
 // AddVendor.js
 import React, { useState } from "react";
 import swal from "sweetalert2";
-import "./vendor.css"; // Ensure consistent styling
-import { useLocation, useNavigate } from "react-router-dom"; // Added useNavigate
+import "./vendor.css"; 
+import { useLocation, useNavigate } from "react-router-dom";
 import { axiosclient } from "../../api";
 
 const UpdateVendor = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // Used for redirecting after update
-  const vendor = location.state.vendor; // Get the passed product record
+  const vendor = location.state.vendor; 
 
   const [vendorName, setVendorName] = useState(vendor.name);
   const [contactEmail, setContactEmail] = useState(vendor.contactInfo);
@@ -45,14 +44,6 @@ const UpdateVendor = () => {
       axiosclient
         .post(`/api/Vendor`, updatedvendor)
         .then((response) => {
-          const vendorlocal = {
-            id: response.data.id,
-            name: vendorName,
-            contactInfo: contactEmail,
-            phone: phoneNumber,
-            category: category,
-            status: status,
-          };
 
           swal.fire({
             title: "Success!",
