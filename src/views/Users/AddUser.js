@@ -33,22 +33,24 @@ const AddUser = () => {
     };
 
     try {
-      // API call to add the new user
-      const response = await axios.post("/api/User", newUser);
+      axiosclient
+        .post(`/api/User`,newUser)
+        .then((response) => {
 
-      // Success alert
-      swal.fire({
-        title: "Success!",
-        text: "User has been added.",
-        icon: "success",
-      });
-
-      // Reset form fields
-      setUserName("");
-      setEmail("");
-      setRole("");
-      setPassword("");
-      setStatus("Active");
+          swal.fire({
+            title: "Success!",
+            text: "Vendor has been added.",
+            icon: "success",
+          });
+          setUserName("");
+          setEmail("");
+          setRole("");
+          setPassword("");
+          setStatus("Active");
+        })
+        .catch((err) => {
+          console.error("Failed to fetch user details", err);
+        });
     } catch (error) {
       // Error handling
       swal.fire({
