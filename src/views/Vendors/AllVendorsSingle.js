@@ -42,34 +42,19 @@ const AllVendorsSingle = ({ vendor }) => {
       });
   };
 
-  const handleMarkAsDelivered = () => {
-    swal
-      .fire({
-        title: "Mark as Delivered?",
-        text: `Do you want to mark vendor "${vendor.name}" as delivered?`,
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonColor: "#28a745",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, mark as delivered",
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          console.log(`Vendor "${vendor.name}" marked as delivered.`);
-
-          swal.fire(
-            "Delivered!",
-            "Vendor has been marked as delivered.",
-            "success"
-          );
-        }
-      });
-  };
 
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     navigate("/vendor/update", { state: { vendor: vendor } });
+  };
+  const handleVendorProducts = async (e) => {
+    e.preventDefault();
+    navigate("/vendor/products", { state: { vendor: vendor } });
+  };
+  const handleVendorReviews = async (e) => {
+    e.preventDefault();
+    navigate("/vendor/reviews", { state: { vendor: vendor } });
   };
 
   return (
@@ -93,12 +78,12 @@ const AllVendorsSingle = ({ vendor }) => {
       </td>
 
       <td>
-        <button className="deliverBtn" onClick={handleMarkAsDelivered}>
+        <button className="deliverBtn" onClick={handleVendorProducts}>
           Products
         </button>
       </td>
       <td>
-        <button className="deliverBtn" onClick={handleMarkAsDelivered}>
+        <button className="deliverBtn" onClick={handleVendorReviews}>
           Reviews
         </button>
       </td>

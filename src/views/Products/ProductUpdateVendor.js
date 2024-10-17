@@ -6,10 +6,11 @@ import CircularProgress from "@mui/material/CircularProgress";
 import "./product.css";
 import { axiosclient } from "../../api";
 
-const ProductUpdate = () => {
+const ProductUpdateVendor = () => {
   const location = useLocation();
   const navigate = useNavigate(); // Used for redirecting after update
   const product = location.state.product; // Get the passed product record
+  const productVendor = location.state.productVendor; // Get the passed product record
 
   // Initialize state with the passed product data
   const [productName, setProductName] = useState(product.productName);
@@ -55,7 +56,7 @@ const ProductUpdate = () => {
           });
 
           setLoading(false);
-          navigate("/product/all");
+          navigate("/vendor/products",{ state: { vendor: productVendor } });
         })
         .catch((err) => {
           setLoading(false);
@@ -75,7 +76,7 @@ const ProductUpdate = () => {
   return (
     <div>
       <form className="addProductForm" onSubmit={handleUpdate}>
-        <h3>Update Product</h3>
+        <h3>Update Vendor Product : VEND_{vendor.slice(0, 4)}</h3>
 
         <label>Product Name</label>
         <input
@@ -128,4 +129,4 @@ const ProductUpdate = () => {
   );
 };
 
-export default ProductUpdate;
+export default ProductUpdateVendor;

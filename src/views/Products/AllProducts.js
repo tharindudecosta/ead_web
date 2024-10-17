@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import swal from "sweetalert2"; // For alerts
 import "./product.css"; // We'll improve this stylesheet for better visuals
 import { axiosclient } from "../../api";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const AllProducts = () => {
   const navigate = useNavigate();
-  const [records, setRecords] = useState([]); 
+  const [records, setRecords] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
+  const [loading, setLoading] = useState(false); // State to control spinner visibility
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -22,7 +24,6 @@ const AllProducts = () => {
 
             if (Array.isArray(response.data)) {
               setRecords(user);
-
             } else {
               console.error("Expected an array, but got:", response.data);
               setRecords([]);
@@ -54,8 +55,11 @@ const AllProducts = () => {
 
   // Filtering products by search and category
   const filteredRecords = records.filter((record) => {
-    const matchesSearch = record.productName.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === "All" || record.category === categoryFilter;
+    const matchesSearch = record.productName
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      categoryFilter === "All" || record.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
 
@@ -65,22 +69,40 @@ const AllProducts = () => {
   };
 
   // Navigate to Update Product page
-  const handleUpdate = (id) => {
-    navigate(`/product/update/${id}`);
+  const handleUpdate = (product) => {
+    navigate("/product/update", { state: { product: product } });
   };
 
   // Handle product deletion via API
   const handleDelete = async (id) => {
+    setLoading(true);
+
     try {
-      await axios.delete(`/api/Product/${id}`);
-      swal.fire({
-        title: "Deleted!",
-        text: "Product has been deleted.",
-        icon: "success",
-      });
-      // Remove the product from the records state after deletion
+      axiosclient
+        .delete(`/api/Product/${id}`)
+        .then((response) => {
+          swal
+            .fire({
+              title: "Success!",
+              text: "Vendor has been updated.",
+              icon: "success",
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+                setLoading(false);
+                window.location.reload();
+              }
+            });
+        })
+        .catch((err) => {
+          setLoading(false);
+
+          console.error("Failed to fetch user details", err);
+        });
       setRecords(records.filter((record) => record._id !== id));
     } catch (error) {
+      setLoading(false);
+
       console.error("Error deleting product:", error);
       swal.fire({
         icon: "error",
@@ -93,7 +115,7 @@ const AllProducts = () => {
   return (
     <div className="product-container">
       <h2>All Products</h2>
-      
+
       {/* Search bar */}
       <input
         type="text"
@@ -102,7 +124,7 @@ const AllProducts = () => {
         value={searchTerm}
         onChange={(e) => handleSearch(e.target.value)}
       />
-      
+
       {/* Category Filter */}
       <select
         className="categoryFilter"
@@ -114,7 +136,7 @@ const AllProducts = () => {
         <option value="Furniture">Furniture</option>
         <option value="Accessories">Accessories</option>
       </select>
-      
+
       {/* Add Product button */}
       <button className="addProductBtn" onClick={handleAddProduct}>
         Add Product
@@ -142,16 +164,29 @@ const AllProducts = () => {
                 <td>{record.category}</td>
                 <td>VEND_{record.vendor.slice(0, 4)}</td>
                 <td>
-                  <span className={record.isActive ? "status-active" : "status-inactive"}>
+                  <span
+                    className={
+                      record.isActive ? "status-active" : "status-inactive"
+                    }
+                  >
                     {record.isActive ? "Active" : "Inactive"}
                   </span>
                 </td>
                 <td>
-                  <button className="actionBtn update" onClick={() => handleUpdate(record._id)}>
+                  <button
+                    className="actionBtn update"
+                    onClick={() => handleUpdate(record)}
+                  >
                     Update
                   </button>
-                  <button className="actionBtn delete" onClick={() => handleDelete(record._id)}>
-                    Delete
+
+                  <button
+                    className="actionBtn delete"
+                    onClick={() => handleDelete(record.id)}
+                    type="submit"
+                    disabled={loading}
+                  >
+                    {loading ? <CircularProgress size={24} /> : "Delete"}
                   </button>
                 </td>
               </tr>
