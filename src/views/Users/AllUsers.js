@@ -16,27 +16,16 @@ const AllUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        axiosclient
-          .get(`/api/User`)
-          .then((response) => {
-            const userList = response.data;
-            console.log(response.data);
+        const response = await axiosclient.get(`/api/User`);
+        const userList = response.data;
+        console.log(response.data);
 
-            if (Array.isArray(userList)) {
-              setUsers(userList); // Assuming response.data contains the user list
-            } else {
-              console.error("Expected an array, but got:", response.data);
-              setUsers([]); // Handle unexpected response structure
-            }
-          })
-          .catch((err) => {
-            console.error("Failed to fetch user details", err);
-            swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "Failed to fetch users.",
-            });
-          });
+        if (Array.isArray(userList)) {
+          setUsers(userList); // Assuming response.data contains the user list
+        } else {
+          console.error("Expected an array, but got:", response.data);
+          setUsers([]); // Handle unexpected response structure
+        }
       } catch (error) {
         console.error("Error fetching users:", error);
         swal.fire({
@@ -49,6 +38,15 @@ const AllUsers = () => {
 
     fetchUsers();
   }, []); // Empty dependency array means it runs once on component mount
+
+  // Update the user list after activation/deactivation
+  const handleUserUpdate = (userId) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user._id === userId ? { ...user, isActive: !user.isActive } : user
+      )
+    );
+  };
 
   // Handle search input
   const handleSearch = (searchValue) => {
@@ -72,28 +70,6 @@ const AllUsers = () => {
   // Navigate to Add User page
   const handleAddUser = () => {
     navigate("/user/add"); // Navigate to add-user route
-  };
-
-  // Handle deleting a user
-  const handleDeleteUser = async (userId) => {
-    try {
-      await axiosclient.delete(`/api/User/${userId}`);
-      swal.fire({
-        title: "Deleted!",
-        text: "The user has been removed.",
-        icon: "success",
-      });
-
-      // Remove the user from the local state after successful deletion
-      setUsers(users.filter((user) => user._id !== userId));
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Failed to delete the user. Please try again.",
-      });
-    }
   };
 
   return (
@@ -137,7 +113,7 @@ const AllUsers = () => {
             <th>Email</th>
             <th>Role</th>
             <th>Status</th>
-            <th>Delete</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -146,7 +122,7 @@ const AllUsers = () => {
               <AllUsersSingle
                 key={user._id}
                 user={user}
-                handleDeleteUser={handleDeleteUser} // Pass delete function to child component
+                handleUserUpdate={handleUserUpdate} // Pass update function to child component
               />
             ))
           ) : (
