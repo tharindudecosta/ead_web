@@ -3,32 +3,45 @@ import { useNavigate } from "react-router-dom";
 import { axiosclient } from "../../api"; // Import axiosclient for API calls
 import swal from "sweetalert2"; // Import SweetAlert for notifications
 
-const AllUsersSingle = ({ user, handleDeleteUser }) => {
+const AllUsersSingle = ({ user, handleUserUpdate }) => {
   const navigate = useNavigate();
 
-  // Delete user using Axios
-  const handleDelete = async () => {
+  // Handle setting user as inactive
+  const handleDeactivate = async () => {
     try {
-      // Make API call to delete the user
-      await axiosclient.delete(`/api/User/${user._id}`);
-
-      // Show success notification
+      await axiosclient.patch(`/api/User/${user._id}`, { isActive: false });
       swal.fire({
-        title: "Deleted!",
-        text: `User ${user.name} has been removed.`,
+        title: "User Inactivated!",
+        text: `User ${user.name} has been marked as inactive.`,
         icon: "success",
       });
-
-      // Call the parent function to remove the user from state
-      handleDeleteUser(user._id);
+      handleUserUpdate(user._id); // Update the user list locally if needed
     } catch (error) {
-      console.error("Error deleting user:", error);
-
-      // Show error notification
+      console.error("Error inactivating user:", error);
       swal.fire({
         icon: "error",
         title: "Error",
-        text: "Failed to delete the user. Please try again.",
+        text: "Failed to inactivate the user. Please try again.",
+      });
+    }
+  };
+
+  // Handle setting user as active
+  const handleActivate = async () => {
+    try {
+      await axiosclient.patch(`/api/User/${user._id}`, { isActive: true });
+      swal.fire({
+        title: "User Activated!",
+        text: `User ${user.name} has been marked as active.`,
+        icon: "success",
+      });
+      handleUserUpdate(user._id); // Update the user list locally if needed
+    } catch (error) {
+      console.error("Error activating user:", error);
+      swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to activate the user. Please try again.",
       });
     }
   };
@@ -44,9 +57,15 @@ const AllUsersSingle = ({ user, handleDeleteUser }) => {
       <td>{user.role}</td>
       <td>{user.isActive ? "Active" : "Inactive"}</td>
       <td>
-        <button className="deleteBtn" onClick={handleDelete}>
-          Delete
-        </button>
+        {user.isActive ? (
+          <button className="deleteBtn" onClick={handleDeactivate}>
+            Inactivate
+          </button>
+        ) : (
+          <button className="activateBtn" onClick={handleActivate}>
+            Activate
+          </button>
+        )}
       </td>
     </tr>
   );

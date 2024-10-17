@@ -243,6 +243,26 @@ body {
   .deleteBtn:hover {
     background-color: #da190b;
   }
+
+  .activateBtn,
+  .updateBtn {
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Activate Button */
+  .activateBtn {
+    background-color: #16f23b;
+    color: white;
+  }
+  
+  .activateBtn:hover {
+    background-color: #16f23b;
+  }
   
   /* Update Button */
   .updateBtn {
