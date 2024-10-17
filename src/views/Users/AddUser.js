@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios"; // Import Axios for API calls
 import swal from "sweetalert2";
 import "./users.css";
+import { axiosclient } from "../../api"; // Ensure this points to your configured axios client
 
 const AddUser = () => {
   const [userName, setUserName] = useState("");
@@ -12,6 +13,7 @@ const AddUser = () => {
   const handleAddUser = async (e) => {
     e.preventDefault();
 
+    // Validation for empty fields
     if (!userName || !email || !role) {
       swal.fire({
         icon: "error",
@@ -30,8 +32,9 @@ const AddUser = () => {
 
     try {
       // API call to add the new user
-      await axios.post("/api/User", newUser);
+      const response = await axios.post("/api/User", newUser);
 
+      // Success alert
       swal.fire({
         title: "Success!",
         text: "User has been added.",
@@ -44,12 +47,13 @@ const AddUser = () => {
       setRole("");
       setStatus("Active");
     } catch (error) {
-      console.error("Error adding user:", error);
+      // Error handling
       swal.fire({
         icon: "error",
         title: "Error",
         text: "Failed to add user. Please try again.",
       });
+      console.error("Error adding user:", error);
     }
   };
 
