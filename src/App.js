@@ -19,6 +19,7 @@ import AllUsers from "./views/Users/AllUsers";
 import AddUser from "./views/Users/AddUser";
 import AllVendors from "./views/Vendors/AllVendors";
 import AddVendor from "./views/Vendors/AddVendor";
+import UpdateVendor from "./views/Vendors/UpdateVendor";
 
 function App() {
   return (
@@ -39,7 +40,8 @@ function App() {
             <Route path="/inventory" element={<InventoryDashboard />} />
             <Route path="/inventory/update" element={<UpdateStock />} />
             <Route path="/orders" element={<OrderManagement />} />
-            <Route path="/orders/update" element={<OrderUpdate />} />{" "}
+            <Route path="/orders/update" element={<OrderUpdate />} />
+            <Route path="/vendor/update" element={<UpdateVendor />} />
             {/* New route for Order Update */}
           </Routes>
         </div>

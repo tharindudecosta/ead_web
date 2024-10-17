@@ -15,21 +15,37 @@ const AllVendors = () => {
     const fetchVendors = async () => {
       try {
         axiosclient
-        .get(`/api/Vendor`)
-        .then((response) => {
-          const user = response.data;
-          console.log(response.data);
+          .get(`/api/Vendor`)
+          .then((response) => {
+            const user = response.data;
+            console.log(response.data);
 
-          if (Array.isArray(response.data)) {
-            setvendors(response.data);
-          } else {
-            console.error("Expected an array, but got:", response.data);
-            setvendors([]); 
-          }
-        })
-        .catch((err) => {
-          console.error("Failed to fetch user details", err);
-        });
+            if (Array.isArray(response.data)) {
+              const storedVendors = JSON.parse(localStorage.getItem("vendors")) || [];
+
+              // Merge the status from local storage into the DB response
+              const mergedVendors = response.data.map((vendor) => {
+                // Find the status in local storage
+                const storedVendor = storedVendors.find((stored) => stored.id === vendor.id);
+                return {
+                  ...vendor,
+                  status: storedVendor ? storedVendor.status : true,
+                  category: storedVendor ? storedVendor.category : "",
+                  phone: storedVendor ? storedVendor.phone : "",
+                };
+              });
+      
+              // Set the merged vendors to state
+              setvendors(mergedVendors);
+
+            } else {
+              console.error("Expected an array, but got:", response.data);
+              setvendors([]);
+            }
+          })
+          .catch((err) => {
+            console.error("Failed to fetch user details", err);
+          });
       } catch (error) {
         console.error("Error fetching vendors:", error);
         swal.fire({
@@ -57,8 +73,8 @@ const AllVendors = () => {
       vendor.email.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus =
       statusFilter === "All" ||
-      (statusFilter === "Active" && vendor.isActive) ||
-      (statusFilter === "Inactive" && !vendor.isActive);
+      (statusFilter === "Active" && vendor.status) ||
+      (statusFilter === "Inactive" && !vendor.status);
     return matchesSearch && matchesStatus;
   });
 
@@ -97,19 +113,23 @@ const AllVendors = () => {
       <table id="vendor_table">
         <thead>
           <tr>
+            <th>Vendor id</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Role</th>
+            <th>phoneNumber</th>
+            <th>Category</th>
+            <th>Average Review Score</th>
             <th>Status</th>
-            <th>Product Categories</th>
-            <th>Total Quantity</th>
-            <th>Cancel</th>
-            <th>Mark as Delivered</th>
+            <th>Update</th>
+            <th>Delete</th>
+            <th>Products</th>
+            <th>Reviews</th>
           </tr>
         </thead>
         <tbody>
-          {vendors.length > 0 ? (
-            vendors && vendors.map((vendor) => (
+          {filteredVendors.length > 0 ? (
+            filteredVendors &&
+            filteredVendors.map((vendor) => (
               <AllVendorsSingle key={vendor.id} vendor={vendor} />
             ))
           ) : (

@@ -2,26 +2,23 @@
 import React from "react";
 import swal from "sweetalert2";
 import "./vendor.css";
+import { useNavigate } from "react-router-dom";
 
 const AllVendorsSingle = ({ vendor }) => {
-  // const productCategories = vendor.products.map((product) => product.category);
-  // const uniqueCategories = [...new Set(productCategories)].join(", ");
-  // const totalQuantity = vendor.products.reduce(
-  //   (total, product) => total + product.quantity,
-  //   0
-  // );
+
+  const navigate = useNavigate();
 
   const handleCancel = () => {
     swal
       .fire({
         title: "Are you sure?",
-        text: `Do you want to cancel vendor "${vendor.name}"? Please provide a note.`,
+        text: `Do you want to deactivate vendor "${vendor.name}"? Please provide a note.`,
         input: "text",
-        inputPlaceholder: "Enter cancellation reason...",
+        inputPlaceholder: "Enter deactivation reason...",
         showCancelButton: true,
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, cancel it!",
+        confirmButtonText: "Yes, deactivate it!",
         preConfirm: (note) => {
           if (!note) {
             swal.showValidationMessage("You need to enter a reason!");
@@ -33,12 +30,12 @@ const AllVendorsSingle = ({ vendor }) => {
         if (result.isConfirmed) {
           const cancellationNote = result.value;
           console.log(
-            `Vendor "${vendor.name}" cancelled for reason: ${cancellationNote}`
+            `Vendor "${vendor.name}" deactivateed for reason: ${cancellationNote}`
           );
 
           swal.fire(
-            "Cancelled!",
-            `Vendor has been cancelled for reason: ${cancellationNote}`,
+            "Deactivate!",
+            `Vendor has been deactivateed for reason: ${cancellationNote}`,
             "success"
           );
         }
@@ -69,28 +66,40 @@ const AllVendorsSingle = ({ vendor }) => {
       });
   };
 
-  const handleUpdate = () => {
 
-    console.log(`Navigate to update page for vendor ID: ${vendor._id}`);
-
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    navigate("/vendor/update", { state: { vendor: vendor } });
   };
 
   return (
     <tr>
+      <td>VEND_{vendor.id.slice(0, 4)}</td>
       <td>{vendor.name}</td>
-      <td>{vendor.email}</td>
-      <td>{vendor.role}</td>
-      <td>{vendor.isActive ? "Active" : "Inactive"}</td>
-      {/* <td>{uniqueCategories || "N/A"}</td> */}
-      {/* <td>{totalQuantity}</td> */}
+      <td>{vendor.contactInfo}</td>
+      <td>{vendor.phone}</td>
+      <td>{vendor.category}</td>
+      <td>{vendor.averageReviewScore}</td>
+      <td>{vendor.status ? "Active" : "Inactive"}</td>
+      <td>
+        <button className="update-btn" onClick={handleUpdate}>
+        Update
+        </button>
+      </td>
       <td>
         <button className="cancelBtn" onClick={handleCancel}>
-          Cancel
+          Deactivate
+        </button>
+      </td>
+
+      <td>
+        <button className="deliverBtn" onClick={handleMarkAsDelivered}>
+          Products
         </button>
       </td>
       <td>
         <button className="deliverBtn" onClick={handleMarkAsDelivered}>
-          Mark as Delivered
+          Reviews
         </button>
       </td>
     </tr>
