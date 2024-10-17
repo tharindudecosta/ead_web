@@ -1,21 +1,29 @@
+// AddVendor.js
 import React, { useState } from "react";
 import swal from "sweetalert2";
 import "./vendor.css"; // Ensure consistent styling
-import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom"; // Added useNavigate
 import { axiosclient } from "../../api";
 
-const AddVendor = () => {
-  const [vendorName, setVendorName] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [category, setCategory] = useState("");
-  const [status, setStatus] = useState("Active");
+const UpdateVendor = () => {
+  const location = useLocation();
+  const navigate = useNavigate(); // Used for redirecting after update
+  const vendor = location.state.vendor; // Get the passed product record
 
-  const handleAddVendor = async (e) => {
+  const [vendorName, setVendorName] = useState(vendor.name);
+  const [contactEmail, setContactEmail] = useState(vendor.contactInfo);
+  const [category, setCategory] = useState(vendor.category);
+  const [phoneNumber, setPhoneNumber] = useState(vendor.phone);
+
+  const [isActive, setIsActive] = useState(
+    vendor.isActive ? "Active" : "Inactive"
+  );
+  const [status, setStatus] = useState(vendor.isActive ? "Active" : "Inactive");
+
+  const handleUpdateVendor = (e) => {
     e.preventDefault();
 
-    // Check if required fields are filled
-    if (!vendorName || !contactEmail || !phoneNumber || !category) {
+    if (!vendorName || !contactEmail || !category) {
       swal.fire({
         icon: "error",
         title: "Oops...",
@@ -24,7 +32,8 @@ const AddVendor = () => {
       return;
     }
 
-    const vendor = {
+    const updatedvendor = {
+      id: vendor.id,
       name: vendorName,
       contactInfo: contactEmail,
       phone: phoneNumber,
@@ -34,7 +43,7 @@ const AddVendor = () => {
 
     try {
       axiosclient
-        .post(`/api/Vendor`,vendor)
+        .post(`/api/Vendor`, updatedvendor)
         .then((response) => {
           const vendorlocal = {
             id: response.data.id,
@@ -45,14 +54,9 @@ const AddVendor = () => {
             status: status,
           };
 
-          const savedVendors =
-            JSON.parse(localStorage.getItem("vendors")) || [];
-          savedVendors.push(vendorlocal);
-          localStorage.setItem("vendors", JSON.stringify(savedVendors));
-
           swal.fire({
             title: "Success!",
-            text: "Vendor has been added.",
+            text: "Vendor has been updated.",
             icon: "success",
           });
 
@@ -78,8 +82,9 @@ const AddVendor = () => {
 
   return (
     <div className="vendor-container">
-      <form className="addVendorForm" onSubmit={handleAddVendor}>
-        <h3>Add Vendor</h3>
+      <form className="addVendorForm" onSubmit={handleUpdateVendor}>
+        <h3>Update Vendor</h3>
+        <h5>VEND_{vendor.id.slice(0, 4)}</h5>
 
         {/* Vendor Name */}
         <label htmlFor="vendorName">Vendor Name</label>
@@ -101,7 +106,6 @@ const AddVendor = () => {
           onChange={(e) => setContactEmail(e.target.value)}
         />
 
-        {/* Phone Number */}
         <label htmlFor="phoneNumber">Phone Number</label>
         <input
           type="text"
@@ -125,18 +129,37 @@ const AddVendor = () => {
           {/* Add more categories as needed */}
         </select>
 
-        <br />
-        <br />
-        <br />
-        <br />
+        {/* Status */}
+        <div className="statusContainer">
+          <label>Status</label>
+          <br />
+          <label className="statusLabel">
+            <input
+              type="radio"
+              value={true}
+              checked={isActive === true}
+              onChange={() => setIsActive(true)}
+            />
+            Active
+          </label>
+          <label className="statusLabel">
+            <input
+              type="radio"
+              value={false}
+              checked={isActive === false}
+              onChange={() => setIsActive(false)}
+            />
+            Inactive
+          </label>
+        </div>
 
         {/* Submit Button */}
         <button type="submit" className="submitBtn">
-          Add Vendor
+          Update Vendor
         </button>
       </form>
     </div>
   );
 };
 
-export default AddVendor;
+export default UpdateVendor;

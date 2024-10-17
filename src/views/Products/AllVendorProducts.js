@@ -3,7 +3,6 @@ import axios from "axios"; // Import Axios
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert2"; // For alerts
 import "./product.css"; // We'll improve this stylesheet for better visuals
-import { axiosclient } from "../../api";
 
 const AllProducts = () => {
   const navigate = useNavigate();
@@ -14,29 +13,14 @@ const AllProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        axiosclient
-          .get(`/api/Product`)
-          .then((response) => {
-            const user = response.data;
-            console.log(response.data);
-
-            if (Array.isArray(response.data)) {
-              setRecords(user);
-
-            } else {
-              console.error("Expected an array, but got:", response.data);
-              setRecords([]);
-            }
-          })
-          .catch((err) => {
-            console.error("Failed to fetch user details", err);
-          });
+        const response = await axios.get("/api/Product");
+        setRecords(response.data);
       } catch (error) {
-        console.error("Error fetching vendors:", error);
+        console.error("Error fetching products:", error);
         swal.fire({
           icon: "error",
           title: "Error",
-          text: "Failed to fetch vendors.",
+          text: "Failed to fetch products.",
         });
       }
     };
@@ -54,7 +38,7 @@ const AllProducts = () => {
 
   // Filtering products by search and category
   const filteredRecords = records.filter((record) => {
-    const matchesSearch = record.productName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = record.productname.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === "All" || record.category === categoryFilter;
     return matchesSearch && matchesCategory;
   });
@@ -124,8 +108,7 @@ const AllProducts = () => {
         <thead>
           <tr>
             <th>Product Name</th>
-            <th>Product Id</th>
-            <th>Unit Price ($)</th>
+            <th>Unit Price</th>
             <th>Category</th>
             <th>Vendor</th>
             <th>Status</th>
@@ -135,15 +118,14 @@ const AllProducts = () => {
         <tbody>
           {filteredRecords.length > 0 ? (
             filteredRecords.map((record) => (
-              <tr key={record.id}>
-                <td>PROD_{record.id.slice(0, 4)}</td>
-                <td>{record.productName}</td>
-                <td>{record.unitPrice}</td>
+              <tr key={record._id}>
+                <td>{record.productname}</td>
+                <td>{record.unitprice}</td>
                 <td>{record.category}</td>
-                <td>VEND_{record.vendor.slice(0, 4)}</td>
+                <td>{record.vendor}</td>
                 <td>
-                  <span className={record.isActive ? "status-active" : "status-inactive"}>
-                    {record.isActive ? "Active" : "Inactive"}
+                  <span className={record.isactive ? "status-active" : "status-inactive"}>
+                    {record.isactive ? "Active" : "Inactive"}
                   </span>
                 </td>
                 <td>
