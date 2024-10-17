@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import AllVendorsSingle from "./AllVendorsSingle"; // Updated child component
 import { useNavigate } from "react-router-dom";
 import "./vendor.css"; // Updated stylesheet for vendors
+import { useEffect } from "react";
+import axios from "axios"; 
+import swal from "sweetalert2";
 
 const AllVendors = () => {
   const navigate = useNavigate();

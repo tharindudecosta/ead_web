@@ -2,12 +2,16 @@
 import React, { useState } from "react";
 import swal from "sweetalert2";
 import "./vendor.css"; // Ensure consistent styling
+import axios from "axios"; 
 
 const AddVendor = () => {
   const [vendorName, setVendorName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [category, setCategory] = useState("");
+  const [role, setRole] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("");
   const [isActive, setIsActive] = useState(true);
 
   const handleAddVendor = async (e) => {
