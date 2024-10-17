@@ -4,12 +4,12 @@ import swal from "sweetalert2";
 import "./vendor.css";
 
 const AllVendorsSingle = ({ vendor }) => {
-  const productCategories = vendor.products.map((product) => product.category);
-  const uniqueCategories = [...new Set(productCategories)].join(", ");
-  const totalQuantity = vendor.products.reduce(
-    (total, product) => total + product.quantity,
-    0
-  );
+  // const productCategories = vendor.products.map((product) => product.category);
+  // const uniqueCategories = [...new Set(productCategories)].join(", ");
+  // const totalQuantity = vendor.products.reduce(
+  //   (total, product) => total + product.quantity,
+  //   0
+  // );
 
   const handleCancel = () => {
     swal
@@ -81,8 +81,8 @@ const AllVendorsSingle = ({ vendor }) => {
       <td>{vendor.email}</td>
       <td>{vendor.role}</td>
       <td>{vendor.isActive ? "Active" : "Inactive"}</td>
-      <td>{uniqueCategories || "N/A"}</td>
-      <td>{totalQuantity}</td>
+      {/* <td>{uniqueCategories || "N/A"}</td> */}
+      {/* <td>{totalQuantity}</td> */}
       <td>
         <button className="cancelBtn" onClick={handleCancel}>
           Cancel

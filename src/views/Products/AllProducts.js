@@ -6,16 +6,15 @@ import "./product.css"; // We'll improve this stylesheet for better visuals
 
 const AllProducts = () => {
   const navigate = useNavigate();
-  const [records, setRecords] = useState([]); // Initially empty, fetched from API
+  const [records, setRecords] = useState([]); 
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
 
-  // Fetch products from the API on component load
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get("/api/Product");
-        setRecords(response.data); // Assuming response.data contains the product list
+        setRecords(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
         swal.fire({
@@ -27,7 +26,7 @@ const AllProducts = () => {
     };
 
     fetchProducts();
-  }, []); // Empty dependency array means it runs once on component mount
+  }, []);
 
   const handleSearch = (searchValue) => {
     setSearchTerm(searchValue);

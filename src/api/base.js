@@ -25,10 +25,14 @@ const axiosclient = axios.create({
   baseURL:
     process.env.NODE_ENV === "production"
       ? process.env.REACT_APP_NODE_API_URL
-      : "https://27e9-2402-4000-b250-2d3d-8d89-c161-9950-d442.ngrok-free.app",
+      // : "https://27e9-2402-4000-b250-2d3d-8d89-c161-9950-d442.ngrok-free.app",
+      : "http://localhost:1000",
+
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true"
   },
+
 });
 
 axiosclient.interceptors.request.use(

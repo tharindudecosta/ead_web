@@ -1,25 +1,35 @@
-// AllVendors.js
-import React, { useState } from "react";
-import AllVendorsSingle from "./AllVendorsSingle"; // Updated child component
+import React, { useState, useEffect } from "react";
+import AllVendorsSingle from "./AllVendorsSingle";
 import { useNavigate } from "react-router-dom";
-import "./vendor.css"; // Updated stylesheet for vendors
-import { useEffect } from "react";
-import axios from "axios"; 
+import "./vendor.css";
 import swal from "sweetalert2";
+import { axiosclient } from "../../api"; // Ensure this points to your configured axios client
 
 const AllVendors = () => {
   const navigate = useNavigate();
-
-  const [vendors, setvendors] = useState();
-
+  const [vendors, setvendors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
 
   useEffect(() => {
-    const fetchvendors = async () => {
+    const fetchVendors = async () => {
       try {
-        const response = await axios.get("/api/Vendor");
-        setvendors(response.data); // Assuming response.data contains the vendor list
+        axiosclient
+        .get(`/api/Vendor`)
+        .then((response) => {
+          const user = response.data;
+          console.log(response.data);
+
+          if (Array.isArray(response.data)) {
+            setvendors(response.data);
+          } else {
+            console.error("Expected an array, but got:", response.data);
+            setvendors([]); 
+          }
+        })
+        .catch((err) => {
+          console.error("Failed to fetch user details", err);
+        });
       } catch (error) {
         console.error("Error fetching vendors:", error);
         swal.fire({
@@ -30,7 +40,7 @@ const AllVendors = () => {
       }
     };
 
-    fetchvendors();
+    fetchVendors();
   }, []);
 
   const handleSearch = (searchValue) => {
@@ -42,7 +52,6 @@ const AllVendors = () => {
   };
 
   const filteredVendors = vendors.filter((vendor) => {
-    const isVendor = vendor.role === "Vendor";
     const matchesSearch =
       vendor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       vendor.email.toLowerCase().includes(searchTerm.toLowerCase());
@@ -50,7 +59,7 @@ const AllVendors = () => {
       statusFilter === "All" ||
       (statusFilter === "Active" && vendor.isActive) ||
       (statusFilter === "Inactive" && !vendor.isActive);
-    return isVendor && matchesSearch && matchesStatus;
+    return matchesSearch && matchesStatus;
   });
 
   const handleAddVendor = () => {
@@ -99,13 +108,13 @@ const AllVendors = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredVendors.length > 0 ? (
-            filteredVendors.map((vendor) => (
-              <AllVendorsSingle key={vendor._id} vendor={vendor} />
+          {vendors.length > 0 ? (
+            vendors && vendors.map((vendor) => (
+              <AllVendorsSingle key={vendor.id} vendor={vendor} />
             ))
           ) : (
             <tr>
-              <td colSpan="9">No vendors found</td>
+              <td colSpan="8">No vendors found</td>
             </tr>
           )}
         </tbody>

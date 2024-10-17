@@ -46,10 +46,10 @@ const Login = () => {
             const decoded = jwtDecode(token);
             const id = decoded.unique_name; 
             Cookies.set("userId", JSON.stringify({ userId: id }), { expires: 1 });
-    
-            Swal.fire("LOGIN", "LOGIN_SUCCCESSFUL", "success").then(() => {
-              navigate("/home");
-            });
+  
+            fetchUserDetails(id);
+  
+            
           }
         } else {
           console.error('Response or response data is undefined');
@@ -67,7 +67,12 @@ const Login = () => {
       .get(`/api/User/${id}`)
       .then((response) => {
         const user = response.data;
-        console.log("User Name:", user.name);
+        console.log(user);
+        
+        console.log("User Name: ***************************************/n", user);
+        Swal.fire("LOGIN", "LOGIN_SUCCCESSFUL", "success").then(() => {
+          navigate("/home");
+        });
       })
       .catch((err) => {
         console.error("Failed to fetch user details", err);
