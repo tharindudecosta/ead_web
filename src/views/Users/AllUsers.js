@@ -4,6 +4,7 @@ import AllUsersSingle from "./AllUsersSingle"; // Updated child component
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert2"; // Import SweetAlert for notifications
 import "./users.css"; // Updated stylesheet for users
+import { axiosclient } from "../../api"; // Use the same axiosclient as in AllProducts
 
 const AllUsers = () => {
   const navigate = useNavigate();
@@ -15,8 +16,27 @@ const AllUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("/api/User");
-        setUsers(response.data); // Assuming response.data contains the user list
+        axiosclient
+          .get(`/api/User`)
+          .then((response) => {
+            const userList = response.data;
+            console.log(response.data);
+
+            if (Array.isArray(userList)) {
+              setUsers(userList); // Assuming response.data contains the user list
+            } else {
+              console.error("Expected an array, but got:", response.data);
+              setUsers([]); // Handle unexpected response structure
+            }
+          })
+          .catch((err) => {
+            console.error("Failed to fetch user details", err);
+            swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Failed to fetch users.",
+            });
+          });
       } catch (error) {
         console.error("Error fetching users:", error);
         swal.fire({
@@ -57,7 +77,7 @@ const AllUsers = () => {
   // Handle deleting a user
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`/api/User/${userId}`);
+      await axiosclient.delete(`/api/User/${userId}`);
       swal.fire({
         title: "Deleted!",
         text: "The user has been removed.",
@@ -98,9 +118,9 @@ const AllUsers = () => {
           onChange={(e) => handleFilter(e.target.value)}
         >
           <option value="All">All Roles</option>
-          <option value="Vendor">Admin</option>
-          <option value="CSR">Manager</option>
-          <option value="Admin">Customer</option>
+          <option value="Vendor">Vendor</option>
+          <option value="CSR">Customer Support</option>
+          <option value="Admin">Admin</option>
         </select>
 
         {/* Add User button */}
@@ -131,7 +151,7 @@ const AllUsers = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="6">No users found</td>
+              <td colSpan="5">No users found</td>
             </tr>
           )}
         </tbody>

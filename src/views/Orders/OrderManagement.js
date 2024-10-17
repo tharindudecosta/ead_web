@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Import Axios for API calls
 import swal from "sweetalert2";
 import "./orderManagement.css";
+import { axiosclient } from "../../api"; // Import axiosclient for API calls
 
 const OrderManagement = () => {
   const [orders, setOrders] = useState([]); // Initially empty, fetched from API
@@ -12,7 +12,7 @@ const OrderManagement = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("/api/Order");
+        const response = await axiosclient.get("/api/Order");
         setOrders(response.data); // Assuming response.data contains the orders list
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -29,16 +29,18 @@ const OrderManagement = () => {
 
   // Function to calculate total price for each order
   const calculateTotalPrice = (items) => {
-    return items.reduce((total, item) => total + item.quantity * item.unitPrice, 0).toFixed(2);
+    return items
+      .reduce((total, item) => total + item.quantity * item.unitPrice, 0)
+      .toFixed(2);
   };
 
   const handleCancelOrder = async (orderId) => {
     try {
       // Update order status to "Cancelled" using PUT request
-      await axios.put(`/api/Order/${orderId}`, { status: "Cancelled" });
+      await axiosclient.put(`/api/Order/${orderId}`, { status: "Cancelled" });
 
       // Update local state after successfully canceling the order
-      const updatedOrders = orders.map(order =>
+      const updatedOrders = orders.map((order) =>
         order.orderId === orderId ? { ...order, status: "Cancelled" } : order
       );
       setOrders(updatedOrders);
@@ -83,14 +85,15 @@ const OrderManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map(order => (
+            {orders.map((order) => (
               <tr key={order.orderId}>
                 <td>{order.orderId}</td>
                 <td>{order.customerName}</td>
                 <td>
-                  {order.items.map(item => (
+                  {order.items.map((item) => (
                     <div key={item.productName}>
-                      {item.productName} - Qty: {item.quantity} - Unit Price: ${item.unitPrice}
+                      {item.productName} - Qty: {item.quantity} - Unit Price: $
+                      {item.unitPrice}
                     </div>
                   ))}
                 </td>
@@ -99,12 +102,18 @@ const OrderManagement = () => {
                 <td>{order.date}</td>
                 <td>
                   {order.status === "Processing" && (
-                    <button onClick={() => handleUpdateOrder(order)} className="update-btn">
+                    <button
+                      onClick={() => handleUpdateOrder(order)}
+                      className="update-btn"
+                    >
                       Update
                     </button>
                   )}
                   {order.status === "Processing" && (
-                    <button onClick={() => handleCancelOrder(order.orderId)} className="cancel-btn">
+                    <button
+                      onClick={() => handleCancelOrder(order.orderId)}
+                      className="cancel-btn"
+                    >
                       Cancel
                     </button>
                   )}

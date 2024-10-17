@@ -72,7 +72,7 @@ const OrderUpdate = () => {
           value={customerName}
           onChange={(e) => setCustomerName(e.target.value)}
         />
-        
+
         <label>Status</label>
         <select value={status} onChange={(e) => setStatus(e.target.value)}>
           <option value="Processing">Processing</option>
@@ -95,7 +95,10 @@ const OrderUpdate = () => {
               min="1"
             />
             <span>Unit Price: ${item.unitPrice}</span>
-            <span>Total: ${calculateTotalPrice(item.quantity, item.unitPrice)}</span> {/* Display total price */}
+            <span>
+              Total: ${calculateTotalPrice(item.quantity, item.unitPrice)}
+            </span>{" "}
+            {/* Display total price */}
           </div>
         ))}
 

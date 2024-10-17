@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Import Axios for API calls
 import swal from "sweetalert2"; // Import SweetAlert for notifications
 import "./inventory.css";
+import { axiosclient } from "../../api"; // Import axiosclient for API calls
 
 const InventoryDashboard = () => {
   const [inventory, setInventory] = useState([]); // Initially empty, fetched from API
@@ -12,7 +12,7 @@ const InventoryDashboard = () => {
   useEffect(() => {
     const fetchInventory = async () => {
       try {
-        const response = await axios.get("/api/Inventory");
+        const response = await axiosclient.get("/api/Inventory");
         setInventory(response.data); // Assuming response.data contains the inventory list
       } catch (error) {
         console.error("Error fetching inventory:", error);
@@ -27,13 +27,15 @@ const InventoryDashboard = () => {
     fetchInventory();
   }, []); // Empty dependency array means it runs once on component mount
 
+  // Handle navigation to update stock page
   const handleUpdateStock = (product) => {
     navigate("/inventory/update", { state: { product } });
   };
 
+  // Handle removing a product from the inventory
   const handleRemoveProduct = async (sku) => {
     try {
-      await axios.delete(`/api/Inventory/product/${sku}`);
+      await axiosclient.delete(`/api/Inventory/product/${sku}`);
       swal.fire({
         title: "Deleted!",
         text: "Product has been removed from inventory.",
