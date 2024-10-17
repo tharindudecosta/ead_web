@@ -7,6 +7,7 @@ import { axiosclient } from "../../api"; // Ensure this points to your configure
 const AddUser = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [status, setStatus] = useState("Active");
 
@@ -26,6 +27,7 @@ const AddUser = () => {
     const newUser = {
       userName,
       email,
+      password,
       role,
       status,
     };
@@ -45,6 +47,7 @@ const AddUser = () => {
       setUserName("");
       setEmail("");
       setRole("");
+      setPassword("");
       setStatus("Active");
     } catch (error) {
       // Error handling
@@ -74,6 +77,13 @@ const AddUser = () => {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <label>Password</label>
+        <input
+          type="text"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         <label>Role</label>
