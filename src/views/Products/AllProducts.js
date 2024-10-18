@@ -135,6 +135,7 @@ const AllProducts = () => {
         <option value="Electronics">Electronics</option>
         <option value="Furniture">Furniture</option>
         <option value="Accessories">Accessories</option>
+        <option value="Stationary">Stationary</option>
       </select>
 
       {/* Add Product button */}
@@ -158,11 +159,11 @@ const AllProducts = () => {
           {filteredRecords.length > 0 ? (
             filteredRecords.map((record) => (
               <tr key={record.id}>
-                <td>PROD_{record.id.slice(0, 4)}</td>
+                <td>PROD_{record.id.slice(-4)}</td>
                 <td>{record.productName}</td>
                 <td>{record.unitPrice}</td>
                 <td>{record.category}</td>
-                <td>VEND_{record.vendor.slice(0, 4)}</td>
+                <td>VEND_{record.vendor.slice(-4)}</td>
                 <td>
                   <span
                     className={

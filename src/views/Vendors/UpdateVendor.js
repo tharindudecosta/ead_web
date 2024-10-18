@@ -75,7 +75,7 @@ const UpdateVendor = () => {
     <div className="vendor-container">
       <form className="addVendorForm" onSubmit={handleUpdateVendor}>
         <h3>Update Vendor</h3>
-        <h5>VEND_{vendor.id.slice(0, 4)}</h5>
+        <h5>VEND_{vendor.id.slice(- 4)}</h5>
 
         {/* Vendor Name */}
         <label htmlFor="vendorName">Vendor Name</label>

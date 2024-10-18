@@ -14,9 +14,10 @@ const AddProduct = () => {
   const [status, setStatus] = useState("Active");
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(false); // State to control spinner visibility
-  
+
   const location = useLocation();
-  const productVendor = location && location.state && location.state.productVendor;
+  const productVendor =
+    location && location.state && location.state.productVendor;
 
   useEffect(() => {
     const fetchVendors = async () => {
@@ -31,11 +32,9 @@ const AddProduct = () => {
           setVendors([]);
         }
 
-        if(productVendor!=null){
-          setVendor(productVendor.id)
+        if (productVendor != null) {
+          setVendor(productVendor.id);
         }
-
-
       } catch (error) {
         console.error("Error fetching vendors:", error);
         swal.fire({
@@ -63,13 +62,12 @@ const AddProduct = () => {
     }
 
     const newProduct = {
-      productName:productName,
+      productName: productName,
       unitPrice: unitPrice,
-      category:category,
-      vendor:vendor,
-      isActive:status === "Active",
+      category: category,
+      vendor: vendor,
+      isActive: status === "Active",
     };
-
 
     try {
       axiosclient
@@ -84,7 +82,7 @@ const AddProduct = () => {
           setLoading(false);
           setProductName("");
           setUnitPrice("");
-          if(productVendor==null){
+          if (productVendor == null) {
             setVendor("");
           }
           setCategory("");
@@ -103,7 +101,6 @@ const AddProduct = () => {
       });
       console.error("Error updating product:", error);
     }
-
   };
 
   return (
@@ -126,14 +123,24 @@ const AddProduct = () => {
         />
 
         <label>Category</label>
-        <input
-          type="text"
+        <select
+          className="categoryFilter"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-        />
+        >
+          <option value="">Select Category</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Furniture">Furniture</option>
+          <option value="Accessories">Accessories</option>
+          <option value="Stationary">Stationary</option>
+        </select>
 
         <label>Vendor</label>
-        <select value={vendor} onChange={(e) => setVendor(e.target.value)}>
+        <select
+          className="categoryFilter"
+          value={vendor}
+          onChange={(e) => setVendor(e.target.value)}
+        >
           <option value="">Select Vendor</option>
           {vendors.map((v) => (
             <option key={v.id} value={v.id}>

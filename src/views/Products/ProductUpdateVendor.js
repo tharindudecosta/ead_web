@@ -76,7 +76,7 @@ const ProductUpdateVendor = () => {
   return (
     <div>
       <form className="addProductForm" onSubmit={handleUpdate}>
-        <h3>Update Vendor Product : VEND_{vendor.slice(0, 4)}</h3>
+        <h3>Update Vendor Product : VEND_{vendor.slice(- 4)}</h3>
 
         <label>Product Name</label>
         <input
@@ -100,7 +100,7 @@ const ProductUpdateVendor = () => {
         />
 
         <label>Vendor id</label>
-        <h5>VEND_{vendor.slice(0, 4)}</h5>
+        <h5>VEND_{vendor.slice(- 4)}</h5>
 
         <div className="statusContainer">
           <label>Status</label>

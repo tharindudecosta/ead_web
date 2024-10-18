@@ -119,7 +119,7 @@ const AllVendorProducts = () => {
 
   return (
     <div className="product-container">
-      <h2>All Vendor Products : VEND_{vendor.id.slice(0, 4)}</h2>
+      <h2>All Vendor Products : VEND_{vendor.id.slice(- 4)}</h2>
 
       {/* Search bar */}
       <input
@@ -163,11 +163,11 @@ const AllVendorProducts = () => {
           {filteredRecords.length > 0 ? (
             filteredRecords.map((record) => (
               <tr key={record.id}>
-                <td>PROD_{record.id.slice(0, 4)}</td>
+                <td>PROD_{record.id.slice(- 4)}</td>
                 <td>{record.productName}</td>
                 <td>{record.unitPrice}</td>
                 <td>{record.category}</td>
-                <td>VEND_{record.vendor.slice(0, 4)}</td>
+                <td>VEND_{record.vendor.slice(- 4)}</td>
                 <td>
                   <span
                     className={

@@ -13,7 +13,7 @@ const AllProductsSingle = ({ record }) => {
       <td>{record.productname}</td>
       <td>{record.unitprice}</td>
       <td>{record.category}</td>
-      <td>VEND_{record.vendor.slice(0, 4)}</td>
+      <td>VEND_{record.vendor.slice(- 4)}</td>
       <td>{record.isactive ? "Active" : "Inactive"}</td>
       <td>
         <button className="redButton">Delete</button>

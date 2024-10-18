@@ -1,16 +1,56 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../styles/tiles.css";
+import { axiosclient } from "../api";
+import Cookies from "js-cookie";
 
 const Home = () => {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+  // const role = user?.role;
+  const [role, setRole] = useState("");
+
 
   useEffect(() => {
-    // const jwtToken = `eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJib2J3aWxsaWFtc0BleGFtcGxlLmNvbSIsInVzZXJJZCI6IkFETUlOX1NUQUZGIiwiaWF0IjoxNzEzODE1Njg2LCJleHAiOjE3MTM4MjQ2ODZ9.lELg_92gOs7xSPyGXYrZ0dgVqXgbV7jX2Epot1NTROOUCJa77s32mRJdY_pfBifpbzrIFswttEo-UPLVbx5AfA`
-    // const user = JSON.parse(localStorage.getItem("token"));
-    // const decoded = jwtDecode(user);
-    // console.log(decoded);
-  });
+    const getTokenCookieData = () => {
+      const cookieData = Cookies.get('userId');
+    
+      if (cookieData) {
+        return JSON.parse(cookieData);
+      }
+    
+      return null;
+    };
+    
+    const getTokenFromCookie = () => {
+      const cookieData = getTokenCookieData();
+      if (cookieData) {
+        return cookieData.userId;
+      } else {
+        return null;
+      }
+    };
+
+    const fetchUserDetails = (id) => {
+
+      axiosclient
+        .get(`/api/User/${id}`)
+        .then((response) => {
+          const user = response.data;
+          console.log(user);
+          if (response.status === 200) {
+            localStorage.setItem("user", JSON.stringify(response.data));
+  
+            setRole(response.data.role)
+          }
+        })
+        .catch((err) => {
+          console.error("Failed to fetch user details", err);
+        });
+    };
+
+    fetchUserDetails(getTokenFromCookie());
+  },[]);
 
   return (
     <div className="home">
@@ -41,21 +81,9 @@ const Home = () => {
             <div className="tile-text">Orders</div>
           </div>
 
-          <div className="tiles-common goals-tile">
-            <div className="tile-icon">
-              <i className="fa-solid fa-bullseye fa-lg"></i>
-            </div>
-            <div
-              className="tile-text"
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              Goals
-            </div>
-          </div>
 
-          <div
+          {(role.toLowerCase() === "admin") &&(
+            <div
             className="tiles-common appraials-tile"
             onClick={() => {
               navigate("/inventory");
@@ -68,6 +96,9 @@ const Home = () => {
             </div>
             <div className="tile-text">Inventory</div>
           </div>
+          )}
+          
+          
 
           <div
             className="tiles-common calendar-tile"
@@ -81,18 +112,7 @@ const Home = () => {
             <div className="tile-text">Users</div>
           </div>
 
-          <div
-            className="tiles-common administration-tile"
-            onClick={() => {
-              navigate("/Services");
-            }}
-          >
-            <div className="tile-icon">
-              <i className="fa-solid fa-address-card fa-lg"></i>
-            </div>
-            <div className="tile-text">CSR</div>
-          </div>
-
+          
           <div
             className="tiles-common company-policies-tile"
             onClick={() => {

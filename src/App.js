@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 
 // Components
 import Navbar from "./components/Navbar";
+import Auth from "./components/Auth";
 
 // Views
 import AllProducts from "./views/Products/AllProducts";
@@ -31,24 +32,25 @@ function App() {
         <Navbar />
         <div className="pages">
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/product/all" element={<AllProducts />} />
-            <Route path="/product/update" element={<ProductUpdate />} />
-            <Route path="/product/add" element={<AddProduct />} />
-            <Route path="/user/all" element={<AllUsers />} />
-            <Route path="/user/add" element={<AddUser />} />
-            <Route path="/vendor/all" element={<AllVendors />} />
-            <Route path="/vendor/add" element={<AddVendor />} />
-            <Route path="/inventory" element={<InventoryDashboard />} />
-            <Route path="/inventory/update" element={<UpdateStock />} />
-            <Route path="/orders" element={<OrderManagement />} />
-            <Route path="/orders/update" element={<OrderUpdate />} />
-            <Route path="/vendor/update" element={<UpdateVendor />} />
-            <Route path="/vendor/products" element={<AllVendorProducts />} />
-            <Route path="/vendor/product/update" element={<ProductUpdateVendor />} />
-            <Route path="/vendor/reviews" element={<AllVendorReviews />} />
-            {/* New route for Order Update */}
+          <Route path="/login" element={<Login /> } />
+          <Route path="/" element={<Auth> <Home /> </Auth>} />
+          <Route path="/product/all" element={<Auth> <AllProducts /> </Auth>} />
+          <Route path="/product/update" element={<Auth> <ProductUpdate /> </Auth>} />
+          <Route path="/product/add" element={<Auth> <AddProduct /> </Auth>} />
+          <Route path="/user/all" element={<Auth> <AllUsers /> </Auth>} />
+          <Route path="/user/add" element={<Auth> <AddUser /> </Auth>} />
+          <Route path="/vendor/all" element={<Auth> <AllVendors /> </Auth>} />
+          <Route path="/vendor/add" element={<Auth> <AddVendor /> </Auth>} />
+          <Route path="/inventory" element={<Auth> <InventoryDashboard /> </Auth>} />
+          <Route path="/inventory/update" element={<Auth> <UpdateStock /> </Auth>} />
+          <Route path="/orders" element={<Auth> <OrderManagement /> </Auth>} />
+          <Route path="/orders/update" element={<Auth> <OrderUpdate /> </Auth>} />
+          <Route path="/vendor/update" element={<Auth> <UpdateVendor /> </Auth>} />
+          <Route path="/vendor/products" element={<Auth> <AllVendorProducts /> </Auth>} />
+          <Route path="/vendor/product/update" element={<Auth> <ProductUpdateVendor /> </Auth>} />
+          <Route path="/vendor/reviews" element={<Auth> <AllVendorReviews /> </Auth>} />
+
+            
           </Routes>
         </div>
       </BrowserRouter>

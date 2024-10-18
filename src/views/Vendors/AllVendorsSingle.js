@@ -59,7 +59,7 @@ const AllVendorsSingle = ({ vendor }) => {
 
   return (
     <tr>
-      <td>VEND_{vendor.id.slice(0, 4)}</td>
+      <td>VEND_{vendor.id.slice(- 4)}</td>
       <td>{vendor.name}</td>
       <td>{vendor.contactInfo}</td>
       <td>{vendor.phone}</td>

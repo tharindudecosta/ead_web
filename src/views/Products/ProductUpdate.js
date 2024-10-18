@@ -99,7 +99,7 @@ const ProductUpdate = () => {
         />
 
         <label>Vendor id</label>
-        <h5>VEND_{vendor.slice(0, 4)}</h5>
+        <h5>VEND_{vendor.slice(- 4)}</h5>
 
         <div className="statusContainer">
           <label>Status</label>
