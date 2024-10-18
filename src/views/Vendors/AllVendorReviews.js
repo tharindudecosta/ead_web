@@ -21,7 +21,7 @@ const AllVendorReviews = () => {
 
   return (
     <div className="product-container">
-      <h2>Vendor Reviews : VEND_{vendor.id.slice(0, 4)}</h2>
+      <h2>Vendor Reviews : VEND_{vendor.id.slice(- 4)}</h2>
 
       <table id="product_table">
         <thead>
@@ -37,8 +37,8 @@ const AllVendorReviews = () => {
           {records.length > 0 ? (
             records.map((record) => (
               <tr key={record.reviewId}>
-                <td>REV_{record.reviewId.slice(0, 4)}</td>
-                <td>CUS_{record.customerId.slice(0, 4)}</td>
+                <td>REV_{record.reviewId.slice(- 4)}</td>
+                <td>CUS_{record.customerId.slice(- 4)}</td>
                 <td>{record.rating}</td>
                 <td>{record.comment}</td>
                 <td><DateFormatter dateString= {record.timestamp}></DateFormatter></td>

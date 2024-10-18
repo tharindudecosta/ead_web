@@ -1,5 +1,5 @@
 // AllVendorsSingle.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import swal from "sweetalert2";
 import "./vendor.css";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,13 @@ import { useNavigate } from "react-router-dom";
 const AllVendorsSingle = ({ vendor }) => {
 
   const navigate = useNavigate();
+  const [status, setStatus] = useState(vendor.status);
+
+  useEffect(() => {
+    if (status !== vendor.status) {
+      console.log(`Status changed to: ${status}`);
+    }
+  }, [status]);
 
   const handleCancel = () => {
     swal
@@ -29,10 +36,8 @@ const AllVendorsSingle = ({ vendor }) => {
       .then((result) => {
         if (result.isConfirmed) {
           const cancellationNote = result.value;
-          console.log(
-            `Vendor "${vendor.name}" deactivateed for reason: ${cancellationNote}`
-          );
-
+          setStatus("Inactive")
+          
           swal.fire(
             "Deactivate!",
             `Vendor has been deactivateed for reason: ${cancellationNote}`,
@@ -59,18 +64,18 @@ const AllVendorsSingle = ({ vendor }) => {
 
   return (
     <tr>
-      <td>VEND_{vendor.id.slice(0, 4)}</td>
+      <td>VEND_{vendor.id.slice(- 4)}</td>
       <td>{vendor.name}</td>
       <td>{vendor.contactInfo}</td>
       <td>{vendor.phone}</td>
       <td>{vendor.category}</td>
       <td>{vendor.averageReviewScore}</td>
-      <td>{vendor.status ? "Active" : "Inactive"}</td>
-      <td>
+      <td>{status}</td>
+      {/* <td>
         <button className="update-btn" onClick={handleUpdate}>
         Update
         </button>
-      </td>
+      </td> */}
       <td>
         <button className="cancelBtn" onClick={handleCancel}>
           Deactivate

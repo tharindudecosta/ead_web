@@ -4,27 +4,35 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
 
+  const user = JSON.parse(localStorage.getItem("token"));
+  const role = user?.role;
+
   const handleClick = (e) => {
     // logout
     e.preventDefault();
-    navigate("/");
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   return (
     <header>
       <div className="container">
-        <Link to="/home">
+        <Link to="/">
           <h1>E-Commerce Manager</h1>
         </Link>
         <nav>
-          <div>
-            <button onClick={handleClick}>Log out</button>
-          </div>
-          <div>
+          {user && (
             <div>
-              <Link to="/">Login</Link>
+              <button onClick={handleClick}>Log out</button>
             </div>
-          </div>
+          )}
+          {!user && (
+            <div>
+              <div>
+                <Link to="/login">Login</Link>
+              </div>
+            </div>
+          )}
         </nav>
       </div>
     </header>
