@@ -11,8 +11,9 @@ import Navbar from "./components/Navbar";
 import AllProducts from "./views/Products/AllProducts";
 import ProductUpdate from "./views/Products/ProductUpdate";
 import AddProduct from "./views/Products/AddProduct";
-import InventoryDashboard from "./views/Inventory/InventoryDashboard";
-import UpdateStock from "./views/Inventory/UpdateStock";
+import InventoryDashboard from "./views/Inventory/InventoryDashboard"; // Inventory Dashboard view
+import AddInventory from "./views/Inventory/AddInventory"; // Add Inventory view
+import UpdateStock from "./views/Inventory/UpdateStock"; // Update inventory stock view
 import OrderManagement from "./views/Orders/OrderManagement"; // New Order Management view
 import OrderUpdate from "./views/Orders/OrderUpdate"; // New Order Update view
 import AllUsers from "./views/Users/AllUsers";
@@ -40,8 +41,9 @@ function App() {
             <Route path="/user/add" element={<AddUser />} />
             <Route path="/vendor/all" element={<AllVendors />} />
             <Route path="/vendor/add" element={<AddVendor />} />
-            <Route path="/inventory" element={<InventoryDashboard />} />
-            <Route path="/inventory/update" element={<UpdateStock />} />
+            <Route path="/inventory" element={<InventoryDashboard />} /> {/* Inventory dashboard */}
+            <Route path="/inventory/add" element={<AddInventory />} /> {/* Add new inventory */}
+            <Route path="/inventory/update" element={<UpdateStock />} /> {/* Update inventory stock */}
             <Route path="/orders" element={<OrderManagement />} />
             <Route path="/orders/update" element={<OrderUpdate />} />
             <Route path="/vendor/update" element={<UpdateVendor />} />
