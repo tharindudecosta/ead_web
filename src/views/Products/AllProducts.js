@@ -146,8 +146,8 @@ const AllProducts = () => {
       <table id="product_table">
         <thead>
           <tr>
-            <th>Product Name</th>
             <th>Product Id</th>
+            <th>Product Name</th>
             <th>Unit Price ($)</th>
             <th>Category</th>
             <th>Vendor</th>

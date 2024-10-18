@@ -23,9 +23,7 @@ const AllVendors = () => {
             if (Array.isArray(response.data)) {
               const storedVendors = JSON.parse(localStorage.getItem("vendors")) || [];
 
-              // Merge the status from local storage into the DB response
               const mergedVendors = response.data.map((vendor) => {
-                // Find the status in local storage
                 const storedVendor = storedVendors.find((stored) => stored.id === vendor.id);
                 return {
                   ...vendor,
@@ -35,7 +33,6 @@ const AllVendors = () => {
                 };
               });
       
-              // Set the merged vendors to state
               setvendors(mergedVendors);
 
             } else {
@@ -120,7 +117,7 @@ const AllVendors = () => {
             <th>Category</th>
             <th>Average Review Score</th>
             <th>Status</th>
-            <th>Update</th>
+            {/* <th>Update</th> */}
             <th>Delete</th>
             <th>Products</th>
             <th>Reviews</th>
