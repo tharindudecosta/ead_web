@@ -74,7 +74,9 @@ const OrderUpdate = () => {
         />
 
         <label>Status</label>
-        <select value={status} onChange={(e) => setStatus(e.target.value)}>
+        <select 
+          className="categoryFilter"
+          value={status} onChange={(e) => setStatus(e.target.value)}>
           <option value="Processing">Processing</option>
           <option value="Shipped">Shipped</option>
           <option value="Delivered">Delivered</option>

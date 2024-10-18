@@ -109,6 +109,7 @@ const UpdateVendor = () => {
         {/* Category */}
         <label htmlFor="category">Category</label>
         <select
+          className="categoryFilter"
           id="category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}

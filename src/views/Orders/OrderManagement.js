@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import swal from "sweetalert2";
 import "./orderManagement.css";
 import { axiosclient } from "../../api"; // Import axiosclient for API calls
+import DateFormatter from "../../components/DateFormatter";
 
 const OrderManagement = () => {
   const [orders, setOrders] = useState([]); // Initially empty, fetched from API
@@ -27,6 +28,11 @@ const OrderManagement = () => {
     fetchOrders();
   }, []); // Empty dependency array ensures the API is called only once on component mount
 
+
+  useEffect(() => {
+    console.log(orders);
+    
+  }, [orders]);
   // Function to calculate total price for each order
   const calculateTotalPrice = (items) => {
     return items
@@ -37,11 +43,11 @@ const OrderManagement = () => {
   const handleCancelOrder = async (orderId) => {
     try {
       // Update order status to "Cancelled" using PUT request
-      await axiosclient.put(`/api/Order/${orderId}`, { status: "Cancelled" });
+      // await axiosclient.put(`/api/Order/${orderId}`, { orderStatus: "Cancelled" });
 
       // Update local state after successfully canceling the order
       const updatedOrders = orders.map((order) =>
-        order.orderId === orderId ? { ...order, status: "Cancelled" } : order
+        order.id === orderId ? { ...order, orderStatus: "Cancelled" } : order
       );
       setOrders(updatedOrders);
 
@@ -86,38 +92,37 @@ const OrderManagement = () => {
           </thead>
           <tbody>
             {orders.map((order) => (
-              <tr key={order.orderId}>
-                <td>{order.orderId}</td>
-                <td>{order.customerName}</td>
+              <tr key={order.id}>
+                <td>ORD_{order.id.slice(-4)}</td>
+                <td>CUS_{order.customerId.slice(-4)}</td>
                 <td>
-                  {order.items.map((item) => (
-                    <div key={item.productName}>
-                      {item.productName} - Qty: {item.quantity} - Unit Price: $
-                      {item.unitPrice}
+                  {order.productIds.map((item) => (
+                    <div key={item}>
+                    PROD_{item.slice(-4)}
                     </div>
                   ))}
                 </td>
-                <td>${calculateTotalPrice(order.items)}</td>
-                <td>{order.status}</td>
-                <td>{order.date}</td>
+                <td>{order.totalPrice}</td>
+                <td>{order.orderStatus}</td>
+                <td><DateFormatter dateString= {order.orderDate}></DateFormatter></td>
                 <td>
-                  {order.status === "Processing" && (
+                  {/* {order.orderStatus === "Processing" && (
                     <button
                       onClick={() => handleUpdateOrder(order)}
                       className="update-btn"
                     >
                       Update
                     </button>
-                  )}
-                  {order.status === "Processing" && (
+                  )} */}
+                  {order.orderStatus === "Cancel Requested" && (
                     <button
-                      onClick={() => handleCancelOrder(order.orderId)}
+                      onClick={() => handleCancelOrder(order.id)}
                       className="cancel-btn"
                     >
                       Cancel
                     </button>
                   )}
-                  {order.status !== "Processing" && (
+                  {order.orderStatus !== "Cancel Requested" && (
                     <span className="disabled-btn">Cannot Edit</span>
                   )}
                 </td>

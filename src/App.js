@@ -42,9 +42,9 @@ function App() {
           <Route path="/user/add" element={<Auth> <AddUser /> </Auth>} />
           <Route path="/vendor/all" element={<Auth> <AllVendors /> </Auth>} />
           <Route path="/vendor/add" element={<Auth> <AddVendor /> </Auth>} />
-          <Route path="/inventory" element={<InventoryDashboard />} /> {/* Inventory dashboard */}
-          <Route path="/inventory/add" element={<AddInventory />} /> {/* Add new inventory */}
-          <Route path="/inventory/update" element={<UpdateStock />} /> {/* Update inventory stock */}
+          <Route path="/inventory" element={<Auth><InventoryDashboard /></Auth>} /> {/* Inventory dashboard */}
+          <Route path="/inventory/add" element={<Auth><AddInventory /></Auth>} /> {/* Add new inventory */}
+          <Route path="/inventory/update" element={<Auth><UpdateStock /></Auth>} /> {/* Update inventory stock */}
           <Route path="/inventory" element={<Auth> <InventoryDashboard /> </Auth>} />
           <Route path="/inventory/update" element={<Auth> <UpdateStock /> </Auth>} />
           <Route path="/orders" element={<Auth> <OrderManagement /> </Auth>} />
